@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-   <div class="title">赳赳乐享</div>
     <router-view></router-view>
   </div>
 </template>

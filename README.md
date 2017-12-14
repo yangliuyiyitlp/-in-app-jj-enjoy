@@ -1,6 +1,6 @@
 # jj-enjoy
 
-> A Vue.js project
+> 赳赳单车中 赳赳乐享
 
 ## Build Setup
 
