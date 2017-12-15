@@ -1,5 +1,6 @@
 <template>
   <div class="list">
+
     <div id="apptest" @click="toShare">shareActivityPlatform</div>
     <div id="apptest1" @click="toLogin">toLogin</div>
     <div id="apptest2" @click="toScan">toScan</div>
@@ -28,18 +29,24 @@
     created () {
       this.getList()
     },
-//    beforeRouteLeave (to, from, next) {
-//      console.log(1)
-//      let position = window.scrollY()
-//      this.$store.commit('SAVE_POSITION', position) // 离开路由时把位置存起来
-//      next()
-//    },
+    beforeRouteLeave (to, from, next) {
+      window.sessionStorage.setItem('scrollTop', this.getScrollTop.scrollTop) // 离开路由时把位置存起来
+      next()
+    },
     updated () {
-      this.$nextTick(function () {
-        let position = this.$store.state.position // 返回页面取出来
-        window.scroll(0, position)
-        console.log(position)
-      })
+      let _this = this
+      // 返回同一个位置
+      let scrollTop = +window.sessionStorage.getItem('scrollTop') // 返回页面取出来
+      if (scrollTop) {
+        _this.$nextTick(function () {
+          window.scroll(0, scrollTop)
+        })
+      }
+//      this.$nextTick(function () {
+//        let position = this.$store.state.position // 返回页面取出来
+//        window.scroll(0, position)
+//        console.log(position)
+//      })
     },
     methods: {
       getList () {
@@ -49,7 +56,7 @@
         } else {
           city = '上海'
         }
-        this.$ajax.get(city)
+        this.$ajax.get(city + '/1/100')
           .then(res => {
             if (res.data.code === 200) {
               console.log(res.data)
@@ -75,11 +82,12 @@
       // 获取地址栏参数
       getQS: (paras) => {
         console.log('getQueryString')
-        let url = location.href
-        let paraString = url.substring(url.indexOf('?') + 1, url.length).split('&')
+        // let url = location.href
+        let url = 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&userId=tom'
+        let paraArr = url.substring(url.indexOf('?') + 1, url.length).split('&')
         let paraObj = {}
-        for (let i = 0, j = paraString[i]; i < paraString.length; i++) {
-          paraObj[j.substring(0, j.indexOf('=')).toLowerCase()] = j.substring(j.indexOf('=') + 1, j.length)
+        for (let i = 0; i < paraArr.length; i++) {
+          paraObj[paraArr[i].split('=')[0].toLowerCase()] = paraArr[i].split('=')[1]
         }
         let returnValue = paraObj[paras.toLowerCase()]
         if (typeof (returnValue) === 'undefined') {
@@ -87,7 +95,29 @@
         } else {
           return decodeURIComponent(returnValue)
         }
+      },
+      getScrollTop: () => {
+        let scrollTop = 0
+        if (document.documentElement && document.documentElement.scrollTop) {
+          scrollTop = document.documentElement.scrollTop
+        } else if (document.body) {
+          scrollTop = document.body.scrollTop
+        }
+        return scrollTop
       }
+    },
+    computed: {
+//      getScrollTop () {
+//        let scrollTop = 0
+//        if (document.documentElement && document.documentElement.scrollTop) {
+//          scrollTop = document.documentElement.scrollTop
+//        } else if (document.body) {
+//          scrollTop = document.body.scrollTop
+//        }
+//        window.sessionStorage.setItem('scrollTop', scrollTop)
+//        console.log(scrollTop)
+//        return scrollTop
+//      }
     }
   }
 </script>
@@ -100,25 +130,25 @@
 
   #apptest {
     width: 300px;
-    height: 100px;
+    height: 500px;
     background: red;
   }
 
   #apptest1 {
     width: 300px;
-    height: 100px;
+    height: 500px;
     background: green;
   }
 
   #apptest2 {
     width: 300px;
-    height: 100px;
+    height: 500px;
     background: blueviolet;
   }
 
   #apptest3 {
     width: 300px;
-    height: 100px;
+    height: 500px;
     background: yellow;
   }
 

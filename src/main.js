@@ -9,6 +9,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import '@/assets/css/base.css'
 import baseUrl from './utils/baseUrl'
+// import $ from 'n-zepto'
 
 Vue.use(Vuex)
 Vue.use(MintUI)
@@ -74,6 +75,37 @@ Axios.interceptors.response.use(function (response) {
   MintUI.Indicator.close()// 响应回来后关闭
   return response
 })
+
+router.beforeEach((to, from, next) => {
+  let getScrollTop = () => {
+    let scrollTop = 0
+    if (document.documentElement && document.documentElement.scrollTop) {
+      scrollTop = document.documentElement.scrollTop
+    } else if (document.body) {
+      scrollTop = document.body.scrollTop
+    }
+    return scrollTop
+  }
+  let scrollTop = getScrollTop()
+  window.sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
+  console.log(scrollTop)
+  next()
+})
+
+// router.beforeRouteLeave (to, from, next)=> {
+//   let getScrollTop = () => {
+//     let scrollTop = 0
+//     if (document.documentElement && document.documentElement.scrollTop) {
+//       scrollTop = document.documentElement.scrollTop
+//     } else if (document.body) {
+//       scrollTop = document.body.scrollTop
+//     }
+//     return scrollTop
+//   }
+//   let scrollTop = getScrollTop()
+//   window.sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
+//   next(false)
+// },
 
 const store = new Vuex.Store({
   state: {

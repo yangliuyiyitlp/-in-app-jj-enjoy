@@ -5,18 +5,26 @@ import EnjoyList from '@/components/List/enjoyList'
 Vue.use(Router)
 
 export default new Router({
+  // beforeRouteLeave (to, from, next) {
+  //   let getScrollTop = () => {
+  //     let scrollTop = 0
+  //     if (document.documentElement && document.documentElement.scrollTop) {
+  //       scrollTop = document.documentElement.scrollTop
+  //     } else if (document.body) {
+  //       scrollTop = document.body.scrollTop
+  //     }
+  //     return scrollTop
+  //   }
+  //   let scrollTop = getScrollTop()
+  //   window.sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
+  //   next(false)
+  // },
   routes: [
     {path: '/', redirect: {name: 'enjoylist'}},
     {
       path: '/enjoylist',
       name: 'enjoylist',
-      component: EnjoyList,
-      beforeRouteLeave (to, from, next) {
-        let position = window.scrollY()
-        this.$store.commit('SAVE_POSITION', position) // 离开路由时把位置存起来
-        console.log(1, this.$store.state.position)
-        // next()
-      }
+      component: EnjoyList
     }
   ]
 })

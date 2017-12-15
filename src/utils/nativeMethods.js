@@ -1,24 +1,26 @@
 let u = navigator.userAgent
-// 获取地址栏参数
-let getQS = (paras) => {
-  console.log('getQueryString')
-  let url = location.href
-  let paraString = url.substring(url.indexOf('?') + 1, url.length).split('&')
-  let paraObj = {}
-  for (let i = 0, j = paraString[i]; i < paraString.length; i++) {
-    paraObj[j.substring(0, j.indexOf('=')).toLowerCase()] = j.substring(j.indexOf('=') + 1, j.length)
-  }
-  let returnValue = paraObj[paras.toLowerCase()]
-  if (typeof (returnValue) === 'undefined') {
-    return ''
-  } else {
-    return decodeURIComponent(returnValue)
-  }
-}
 
 let nativeMethods = {
+  // 获取地址栏参数
+  getQS: (paras) => {
+    console.log('getQueryString')
+    let url = location.href
+    // let url = 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&userId=tom'
+    let paraArr = url.substring(url.indexOf('?') + 1, url.length).split('&')
+    let paraObj = {}
+    for (let i = 0; i < paraArr.length; i++) {
+      paraObj[paraArr[i].split('=')[0].toLowerCase()] = paraArr[i].split('=')[1]
+    }
+    let returnValue = paraObj[paras.toLowerCase()]
+    if (typeof (returnValue) === 'undefined') {
+      return ''
+    } else {
+      return decodeURIComponent(returnValue)
+    }
+  },
   // todo 这是怎么分享的?
   toShare: () => {
+    console.log(u)
     console.log('toShare')
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
       window.sharePlatform.goSharePlatform('1')
@@ -27,9 +29,11 @@ let nativeMethods = {
     }
   },
   // 未登录跳转登录
-  toLogin: () => {
+  toLogin: function () {
+    console.log(u)
     console.log('toLogin')
-    if (getQS('userId') === '0' || getQS('userId') === 0) {
+    console.log(this.getQS('userId'))
+    if (this.getQS('userId') === '0' || this.getQS('userId') === 0) {
       if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
         window.sharePlatform.goToLogin()
       } else {
