@@ -1,10 +1,16 @@
 <template>
   <div class="list">
-
-    <div id="apptest" @click="toShare">shareActivityPlatform</div>
-    <div id="apptest1" @click="toLogin">toLogin</div>
+    <p>userId---{{userId}}</p>
+    <p>isApp---{{isApp}}</p>
+    <p>cityName---{{cityName}}</p>
+    <a href="http://99company.99bicycle.com:9002/ElectricBicycleActivity/dist/index.html#/enjoydetail">
+      <div id="apptest" @click="toShare">跳转详情试试</div>
+    </a>
+    <!--<div id="apptest" @click="toShare">shareActivityPlatform</div>-->
+    <div id="apptest1" @click="toHome">goToHomeEvent</div>
     <div id="apptest2" @click="toScan">toScan</div>
     <div id="apptest3" @click="goToScanSpecialEvent">goToScanSpecialEvent</div>
+    <div id="apptest4" @click="toLogin">gotoLogin</div>
 
     <ul>
       <li v-for="(item, index) in list">
@@ -23,6 +29,9 @@
   export default {
     data () {
       return {
+        userId: '',
+        isApp: '',
+        cityName: '',
         list: []
       }
     },
@@ -50,13 +59,18 @@
     },
     methods: {
       getList () {
-        let city
-        if (this.getQS('adId')) {
-          city = this.getQS('adId')
+        this.userId = this.getQS('userId')
+        this.isApp = this.getQS('isApp')
+        if (this.getQS('cityName')) {
+          this.cityName = this.getQS('cityName')
         } else {
-          city = '上海'
+          this.cityName = '上海'
         }
-        this.$ajax.get(city + '/1/100')
+//        /list/{cityName}/{userId}/{isApp}
+//        /detail/{adId}/{userId}/{isApp}
+//        let getListUrl = '/list/' + this.cityName + '/' + this.isApp
+        let getListUrl = '/list/shanghai/1'
+        this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
               console.log(res.data)
@@ -66,6 +80,9 @@
           .catch(err => {
             console.log(err)
           })
+      },
+      toHome () {
+        nativeMethods.toHome()
       },
       toLogin () {
         nativeMethods.toLogin()
@@ -82,8 +99,8 @@
       // 获取地址栏参数
       getQS: (paras) => {
         console.log('getQueryString')
-        // let url = location.href
-        let url = 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&userId=tom'
+//        let url = location.href
+        let url = 'http://99company.99bicycle.com:9002/ElectricBicycleActivity/dist/index.html#/enjoylist?userId=0&isApp=1&cityName=上海市'
         let paraArr = url.substring(url.indexOf('?') + 1, url.length).split('&')
         let paraObj = {}
         for (let i = 0; i < paraArr.length; i++) {
@@ -130,26 +147,32 @@
 
   #apptest {
     width: 300px;
-    height: 500px;
+    height: 100px;
     background: red;
   }
 
   #apptest1 {
     width: 300px;
-    height: 500px;
+    height: 100px;
     background: green;
   }
 
   #apptest2 {
     width: 300px;
-    height: 500px;
+    height: 100px;
     background: blueviolet;
   }
 
   #apptest3 {
     width: 300px;
-    height: 500px;
+    height: 100px;
     background: yellow;
+  }
+
+  #apptest4 {
+    width: 300px;
+    height: 100px;
+    background: pink;
   }
 
 </style>

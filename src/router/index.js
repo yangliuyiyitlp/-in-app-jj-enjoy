@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import EnjoyList from '@/components/List/enjoyList'
+import EnjoyDetail from '@/components/List/enjoyDetail'
 
 Vue.use(Router)
 
@@ -21,10 +22,7 @@ export default new Router({
   // },
   routes: [
     {path: '/', redirect: {name: 'enjoylist'}},
-    {
-      path: '/enjoylist',
-      name: 'enjoylist',
-      component: EnjoyList
-    }
+    {path: '/enjoylist', name: 'enjoylist', component: EnjoyList},
+    {path: '/enjoydetail', name: 'enjoydetail', component: EnjoyDetail}
   ]
 })

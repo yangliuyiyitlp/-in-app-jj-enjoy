@@ -19,13 +19,23 @@ let nativeMethods = {
     }
   },
   // todo 这是怎么分享的?
-  toShare: () => {
+  toShare: (arr) => {
     console.log(u)
     console.log('toShare')
+    // arr = ['shareType', 'url', 'title', 'content', 'shareImageUrl']
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-      window.sharePlatform.goSharePlatform('1')
+      window.sharePlatform.goSharePlatform(arr)
     } else {
-      window.webkit.messageHandlers.shareActivityPlatform.postMessage('1')
+      // window.webkit.messageHandlers.shareActivityPlatform.postMessage(arr)
+      window.webkit.messageHandlers.JJShareInitWithInfo.postMessage(arr)
+    }
+  },
+  // 去登录
+  toHome: function () {
+    if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
+      window.sharePlatform.goHome()
+    } else {
+      window.webkit.messageHandlers.goToHomeEvent.postMessage(null)
     }
   },
   // 未登录跳转登录
@@ -41,7 +51,7 @@ let nativeMethods = {
       }
     }
   },
-  // 扫码 自行车
+  // 扫码 自行车ok
   toScan: () => {
     console.log('toScan')
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
@@ -50,7 +60,7 @@ let nativeMethods = {
       window.webkit.messageHandlers.goToScanEvent.postMessage(null)
     }
   },
-  // todo 这是怎么分享的?
+  // todo 这是做的指定分享 ok
   goToScanSpecialEvent: () => {
     console.log('goToScanSpecialEvent')
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
