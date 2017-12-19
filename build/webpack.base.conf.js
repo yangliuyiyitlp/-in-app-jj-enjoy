@@ -36,6 +36,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      'zepto': 'zepto'
     }
   },
   module: {
@@ -74,6 +75,10 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test:require.resolve('zepto'),
+        loader:'exports-loader?window.Zepto!script-loader'
       }
     ]
   },

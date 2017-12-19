@@ -22,7 +22,7 @@ export default new Router({
   // },
   routes: [
     {path: '/', redirect: {name: 'enjoylist'}},
-    {path: '/enjoylist', name: 'enjoylist', component: EnjoyList},
-    {path: '/enjoydetail', name: 'enjoydetail', component: EnjoyDetail}
+    {path: '/enjoylist', name: 'enjoylist', component: EnjoyList, meta: {title: '赳赳乐享'}},
+    {path: '/enjoydetail', name: 'enjoydetail', component: EnjoyDetail, meta: {title: '活动详情'}}
   ]
 })

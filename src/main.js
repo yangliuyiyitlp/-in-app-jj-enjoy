@@ -10,14 +10,16 @@ import 'mint-ui/lib/style.css'
 import '@/assets/css/base.css'
 import baseUrl from './utils/baseUrl'
 // import $ from 'n-zepto'
+import '@/utils/H5Methods.js'
 
 Vue.use(Vuex)
 Vue.use(MintUI)
 Vue.config.productionTip = false
 Axios.defaults.baseURL = baseUrl
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// 超时时间
+Axios.defaults.timeout = 3000
 Vue.prototype.$ajax = Axios
-
 // class GLoading {
 //   instance = null
 //   refs = 0
@@ -62,6 +64,7 @@ Vue.prototype.$ajax = Axios
 //   return Promise.reject(error)
 // })
 
+console.log(process.env.NODE_ENV)
 // 拦截器操作放在全局性的地方
 Axios.interceptors.request.use(function (config) {
   MintUI.Indicator.open({  // 发起请求前显示
@@ -69,6 +72,13 @@ Axios.interceptors.request.use(function (config) {
     spinnerType: 'fading-circle'
   })
   return config  // 最终告知插件要干嘛，method、url
+}, error => {
+  MintUI.Indicator.close()// 响应失败关闭
+  MintUI.Toast({
+    message: '加载超时',
+    duration: 3000
+  })
+  return Promise.reject(error)
 })
 // 响应拦截器
 Axios.interceptors.response.use(function (response) {
@@ -76,36 +86,19 @@ Axios.interceptors.response.use(function (response) {
   return response
 })
 
+// 动态修改 document title
 router.beforeEach((to, from, next) => {
-  let getScrollTop = () => {
-    let scrollTop = 0
-    if (document.documentElement && document.documentElement.scrollTop) {
-      scrollTop = document.documentElement.scrollTop
-    } else if (document.body) {
-      scrollTop = document.body.scrollTop
+  let documentTitle = ''
+// path 是多级的，遍历
+  to.matched.forEach((path) => {
+    if (path.meta.title) {
+      documentTitle +=
+        `${path.meta.title}`
     }
-    return scrollTop
-  }
-  let scrollTop = getScrollTop()
-  window.sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
-  console.log(scrollTop)
+  })
+  document.title = documentTitle
   next()
 })
-
-// router.beforeRouteLeave (to, from, next)=> {
-//   let getScrollTop = () => {
-//     let scrollTop = 0
-//     if (document.documentElement && document.documentElement.scrollTop) {
-//       scrollTop = document.documentElement.scrollTop
-//     } else if (document.body) {
-//       scrollTop = document.body.scrollTop
-//     }
-//     return scrollTop
-//   }
-//   let scrollTop = getScrollTop()
-//   window.sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
-//   next(false)
-// },
 
 const store = new Vuex.Store({
   state: {

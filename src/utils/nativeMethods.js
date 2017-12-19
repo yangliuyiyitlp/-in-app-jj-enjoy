@@ -3,9 +3,9 @@ let u = navigator.userAgent
 let nativeMethods = {
   // 获取地址栏参数
   getQS: (paras) => {
-    console.log('getQueryString')
+    // console.log('getQueryString')
     let url = location.href
-    // let url = 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&userId=tom'
+    // let url = 'http://99company.99bicycle.com:9002/ElectricBicycleActivity/dist/index.html#/enjoylist?userId=0&isApp=1&cityName=上海市'
     let paraArr = url.substring(url.indexOf('?') + 1, url.length).split('&')
     let paraObj = {}
     for (let i = 0; i < paraArr.length; i++) {
@@ -18,19 +18,21 @@ let nativeMethods = {
       return decodeURIComponent(returnValue)
     }
   },
-  // todo 这是怎么分享的?
+  // 分享可以分享的所有接口
   toShare: (arr) => {
-    console.log(u)
-    console.log('toShare')
-    // arr = ['shareType', 'url', 'title', 'content', 'shareImageUrl']
+    // console.log(u)
+    // console.log('toShare')
+    // 格式要求 arr = ['shareType', 'url', 'title', 'content', 'shareImageUrl']
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-      window.sharePlatform.goSharePlatform(arr)
+      // todo 安卓的这个方法还没有改进
+      // window.sharePlatform.goSharePlatform(arr)
+      window.sharePlatform.setJJShareInitWithInfo(arr)
     } else {
       // window.webkit.messageHandlers.shareActivityPlatform.postMessage(arr)
       window.webkit.messageHandlers.JJShareInitWithInfo.postMessage(arr)
     }
   },
-  // 去登录
+  // 去首页
   toHome: function () {
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
       window.sharePlatform.goHome()
@@ -40,10 +42,10 @@ let nativeMethods = {
   },
   // 未登录跳转登录
   toLogin: function () {
-    console.log(u)
-    console.log('toLogin')
-    console.log(this.getQS('userId'))
-    if (this.getQS('userId') === '0' || this.getQS('userId') === 0) {
+    // console.log(u)
+    // console.log('toLogin')
+    // console.log(this.getQS('userId'))
+    if (sessionStorage.getItem('userId') === '0' || sessionStorage.getItem('userId') === 0) {
       if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
         window.sharePlatform.goToLogin()
       } else {
@@ -53,7 +55,7 @@ let nativeMethods = {
   },
   // 扫码 自行车ok
   toScan: () => {
-    console.log('toScan')
+    // console.log('toScan')
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
       window.sharePlatform.goScan()
     } else {
@@ -62,7 +64,7 @@ let nativeMethods = {
   },
   // todo 这是做的指定分享 ok
   goToScanSpecialEvent: () => {
-    console.log('goToScanSpecialEvent')
+    // console.log('goToScanSpecialEvent')
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
       window.sharePlatform.goSharePlatform('3', 'http://99company.99bicycle.com:9002/ElectricBicycleActivity/Pull-the-new/share.html', '2c94bf815aa65346015aa66428cb0160', '测试分享', '只是想测测分享成不成功', 'http://jjdc-client.oss-cn-shanghai.aliyuncs.com/appIcon/test_jiangshi.png')
     } else {
