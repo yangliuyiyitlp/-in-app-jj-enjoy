@@ -31,12 +31,17 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  /* externals: {
+    'zepto' : '$'
+  },*/
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'zepto': 'zepto'
+      //'zepto': resolve('src/assets/lib/zepto.min.js'),
+      'zepto': resolve('src/assets/scripts/lib/zepto.min.js')
+      //'zepto': 'zepto'
     }
   },
   module: {
@@ -77,8 +82,8 @@ module.exports = {
         }
       },
       {
-        test:require.resolve('zepto'),
-        loader:'exports-loader?window.Zepto!script-loader'
+        test: resolve('src/assets/scripts/lib/zepto.min.js'),
+        loader: 'exports-loader?window.$!script-loader'
       }
     ]
   },
@@ -93,5 +98,12 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: resolve('src/assets/scripts/lib/zepto.min.js'),
+      Zepto: resolve('src/assets/scripts/lib/zepto.min.js'),
+      'window.Zepto': resolve('src/assets/scripts/lib/zepto.min.js')
+    })
+  ]
 }

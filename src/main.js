@@ -10,7 +10,9 @@ import 'mint-ui/lib/style.css'
 import '@/assets/css/base.css'
 import baseUrl from './utils/baseUrl'
 // import $ from 'n-zepto'
+// import zepto from 'zepto'
 import '@/utils/H5Methods.js'
+// Vue.prototype.$ = zepto
 
 Vue.use(Vuex)
 Vue.use(MintUI)
@@ -20,50 +22,6 @@ Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 // 超时时间
 Axios.defaults.timeout = 3000
 Vue.prototype.$ajax = Axios
-// class GLoading {
-//   instance = null
-//   refs = 0
-//
-//   attach (ins) {
-//     this.instance = ins
-//     this.refs++
-//   }
-//
-//   detach () {
-//     if (this.refs > 0) {
-//       this.refs--
-//     }
-//     if (this.refs === 0) {
-//       this.instance.close()
-//     }
-//   }
-// }
-//
-// let loading = new GLoading()
-// Axios.interceptors.request.use(config => {
-//   // element ui Loading方法
-//   let ins = MintUI.Indicator.open({
-//     text: '加载中...',
-//     spinnerType: 'fading-circle'
-//   })
-//
-//   loading.attach(ins)
-//   return config
-// }, error => {
-//   loading.detach()
-//   MintUI.Message.error('加载超时')
-//   return Promise.reject(error)
-// })
-// // http响应拦截器
-// Axios.interceptors.response.use(data => { // 响应成功关闭loading
-//   loading.detach()
-//   return data
-// }, error => {
-//   loading.detach()
-//   MintUI.Message.error('加载失败')
-//   return Promise.reject(error)
-// })
-
 console.log(process.env.NODE_ENV)
 // 拦截器操作放在全局性的地方
 Axios.interceptors.request.use(function (config) {

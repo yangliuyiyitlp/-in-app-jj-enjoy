@@ -5,11 +5,11 @@
     <!--<p>cityName-&#45;&#45;{{cityName}}</p>-->
 
     <!--<a href="http://99company.99bicycle.com:9002/ElectricBicycleActivity/dist/index.html#/enjoydetail">-->
-      <!--<div id="apptest5" @click="toShare">shareActivityPlatform</div>-->
+    <!--<div id="apptest5" @click="toShare">shareActivityPlatform</div>-->
     <!--</a>-->
 
     <!--<router-link to="/enjoydetail">-->
-      <!--<div id="apptest">跳转详情 保留当前高度</div>-->
+    <!--<div id="apptest">跳转详情 保留当前高度</div>-->
     <!--</router-link>-->
 
     <!--<div id="apptest5" @click="toShare">shareActivityPlatform</div>-->
