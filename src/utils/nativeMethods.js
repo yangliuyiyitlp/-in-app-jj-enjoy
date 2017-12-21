@@ -24,7 +24,6 @@ let nativeMethods = {
     // console.log('toShare')
     // 格式要求 arr = ['shareType', 'url', 'title', 'content', 'shareImageUrl']
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-      // todo 安卓的这个方法还没有改进
       // window.sharePlatform.goSharePlatform(arr)
       window.sharePlatform.setJJShareInitWithInfo(arr)
     } else {

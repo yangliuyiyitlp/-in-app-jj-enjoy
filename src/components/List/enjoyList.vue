@@ -74,7 +74,6 @@
       getList () {
         this.userId = nativeMethods.getQS('userId')
         this.isApp = nativeMethods.getQS('isApp')
-//        this.cityName = nativeMethods.getQS('cityName')
         if (nativeMethods.getQS('cityName')) {
           this.cityName = nativeMethods.getQS('cityName')
         } else {
@@ -88,7 +87,6 @@
         } else {
           platform = 2
         }
-//        console.log(1, u)
         let getListUrl = '/list/' + this.cityName + '/' + this.isApp + '/' + platform
 //        let getListUrl = '/list/default/1/2'
         this.$ajax.get(getListUrl)
