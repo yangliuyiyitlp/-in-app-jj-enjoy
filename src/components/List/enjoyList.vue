@@ -1,17 +1,5 @@
 <template>
   <div class="list">
-    <!--<p>userId-&#45;&#45;{{userId}}</p>-->
-    <!--<p>isApp-&#45;&#45;{{isApp}}</p>-->
-    <!--<p>cityName-&#45;&#45;{{cityName}}</p>-->
-
-    <!--<a href="http://99company.99bicycle.com:9002/ElectricBicycleActivity/dist/index.html#/enjoydetail">-->
-    <!--<div id="apptest5" @click="toShare">shareActivityPlatform</div>-->
-    <!--</a>-->
-
-    <!--<router-link to="/enjoydetail">-->
-    <!--<div id="apptest">跳转详情 保留当前高度</div>-->
-    <!--</router-link>-->
-
     <!--<div id="apptest5" @click="toShare">shareActivityPlatform</div>-->
     <!--<div id="apptest1" @click="toHome">goToHomeEvent</div>-->
     <!--<div id="apptest2" @click="toScan">toScan</div>-->
@@ -92,8 +80,17 @@
         } else {
           this.cityName = 'default'
         }
-        let getListUrl = '/list/' + this.cityName + '/' + this.isApp
-//        let getListUrl = '/list/shanghai/1'
+        let platform = ''
+        let u = navigator.userAgent
+//        判断终端 1:android 2:ios',对应显示不同列表
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
+          platform = 1
+        } else {
+          platform = 2
+        }
+//        console.log(1, u)
+        let getListUrl = '/list/' + this.cityName + '/' + this.isApp + '/' + platform
+//        let getListUrl = '/list/default/1/2'
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
@@ -117,7 +114,7 @@
       },
       toShare () {
 //        this.arr = ['shareType', 'url', 'title', 'content', 'shareImageUrl']
-        console.log(this.arr)
+//        console.log(this.arr)
         nativeMethods.toShare(this.arr)
       },
       toScan () {
@@ -126,23 +123,6 @@
       goToScanSpecialEvent () {
         nativeMethods.goToScanSpecialEvent()
       }
-//      // 获取地址栏参数
-//      getQS: (paras) => {
-//        console.log('getQueryString')
-// //        let url = location.href
-//        let url = 'http://99company.99bicycle.com:9002/ElectricBicycleActivity/dist/index.html#/enjoylist?userId=tom&isApp=1&cityName=上海市'
-//        let paraArr = url.substring(url.indexOf('?') + 1, url.length).split('&')
-//        let paraObj = {}
-//        for (let i = 0; i < paraArr.length; i++) {
-//          paraObj[paraArr[i].split('=')[0].toLowerCase()] = paraArr[i].split('=')[1]
-//        }
-//        let returnValue = paraObj[paras.toLowerCase()]
-//        if (typeof (returnValue) === 'undefined') {
-//          return ''
-//        } else {
-//          return decodeURIComponent(returnValue)
-//        }
-//      }
     }
   }
 </script>

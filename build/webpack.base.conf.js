@@ -31,17 +31,11 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
-  /* externals: {
-    'zepto' : '$'
-  },*/
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      //'zepto': resolve('src/assets/lib/zepto.min.js'),
-      'zepto': resolve('src/assets/scripts/lib/zepto.min.js')
-      //'zepto': 'zepto'
     }
   },
   module: {
@@ -80,10 +74,6 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      },
-      {
-        test: resolve('src/assets/scripts/lib/zepto.min.js'),
-        loader: 'exports-loader?window.$!script-loader'
       }
     ]
   },
@@ -98,12 +88,5 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-      $: resolve('src/assets/scripts/lib/zepto.min.js'),
-      Zepto: resolve('src/assets/scripts/lib/zepto.min.js'),
-      'window.Zepto': resolve('src/assets/scripts/lib/zepto.min.js')
-    })
-  ]
+  }
 }
