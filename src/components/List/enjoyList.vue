@@ -7,10 +7,11 @@
     <!--<div id="apptest4" @click="toLogin">gotoLogin</div>-->
 
     <ul>
-      <li v-for="(item, index) in list">
-        <a :href='item.activityPath'>
-          <img v-lazy="item.imgPath">
-        </a>
+      <li v-for="(item, index) in list" @click="getDetail(item)">
+        <img v-lazy="item.imgPath">
+        <!--<a :href='item.activityPath'>-->
+        <!--<img v-lazy="item.imgPath">-->
+        <!--</a>-->
       </li>
     </ul>
   </div>
@@ -92,7 +93,7 @@
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
-              console.log(res.data)
+//              console.log(res.data)
               this.list = res.data.data
             }
           })
@@ -104,23 +105,36 @@
       saveUser () {
         sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
       },
-      toHome () {
-        nativeMethods.toHome()
-      },
-      toLogin () {
-        nativeMethods.toLogin()
-      },
-      toShare () {
-//        this.arr = ['shareType', 'url', 'title', 'content', 'shareImageUrl']
+      getDetail (data) {
+//        console.log(data)
+        location.href = data.activityPath
+//        console.log(data.shareUrl)
+//        console.log(data.id)
+        if (data.isSelf === 1) {
+          let str = '?userId=' + this.userId + '&adId=' + data.id + '&isApp=0'
+          data.shareUrl = data.shareUrl + str
+        }
+        this.arr = [data.sharePlatform, data.shareUrl, data.shareTitle, data.shareContent, data.sharePic]
 //        console.log(this.arr)
         nativeMethods.toShare(this.arr)
-      },
-      toScan () {
-        nativeMethods.toScan()
-      },
-      goToScanSpecialEvent () {
-        nativeMethods.goToScanSpecialEvent()
       }
+//      toHome () {
+//        nativeMethods.toHome()
+//      },
+//      toLogin () {
+//        nativeMethods.toLogin()
+//      },
+//      toShare () {
+// //        this.arr = [sharePlatform, shareUrl, shareTitle, shareContent, sharePic]
+// //        console.log(this.arr)
+//        nativeMethods.toShare(this.arr)
+//      },
+//      toScan () {
+//        nativeMethods.toScan()
+//      },
+//      goToScanSpecialEvent () {
+//        nativeMethods.goToScanSpecialEvent()
+//      }
     }
   }
 </script>

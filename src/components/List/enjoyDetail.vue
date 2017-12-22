@@ -31,8 +31,8 @@
     methods: {
       getDetail () {
 //        /detail/{adId}/{userId}/{isApp}
-//        let getDetailUrl = '/detail/' + this.adId + '/' + this.isApp
-        let getDetailUrl = '/detail/2c94bf815aa65346015aa66428cb0161/1'
+        let getDetailUrl = '/detail/' + this.adId + '/' + this.isApp
+//        let getDetailUrl = '/detail/2c94bf815aa65346015aa66428cb0161/1'
         this.$ajax.get(getDetailUrl)
           .then(res => {
             if (res.data.code === 200) {

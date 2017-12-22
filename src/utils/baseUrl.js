@@ -1,11 +1,10 @@
 let baseUrl
 
 if (process.env.NODE_ENV === 'production') {
-  baseUrl = 'http://139.196.194.172:8281'
-  // baseUrl = 'http://139.196.194.172:8081'
+  baseUrl = 'https://active.99bicycle.com/jjlx'
 } else if (process.env.NODE_ENV === 'test') {
   // baseUrl = 'http://192.168.0.164:8281'
-  baseUrl = 'http://139.196.194.172:8081'
+  baseUrl = 'http://139.196.194.172:8281'
 } else {
   // baseUrl = 'http://192.168.0.164:8281'
   baseUrl = 'http://139.196.194.172:8281'
