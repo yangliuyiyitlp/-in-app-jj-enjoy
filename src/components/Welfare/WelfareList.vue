@@ -112,7 +112,7 @@
 //          let str = '?userId=' + this.userId + '&adId=' + data.id + '&isApp=0'
 //          data.shareUrl = data.shareUrl + str
 //        }
-        this.arr = [data.share_platform, data.share_url, data.share_title, data.share_content, data.share_pic]
+        this.arr = [data.sharePlatform, data.shareUrl, data.shareTitle, data.shareContent, data.sharePic]
 //        console.log(this.arr)
         nativeMethods.toShare(this.arr)
       }
@@ -145,19 +145,13 @@
 
   li img {
     display: inline-block;
-    /*width:345px;*/
-    /*height:140px;*/
-    /*margin-top: 15px;*/
-    /*-webkit-border-radius: 12px;*/
-    /*-moz-border-radius: 12px;*/
-    /*border-radius: 12px;*/
-    text-align: center;
-    width:17.25rem;
-    height:7rem;
+    width: 17.25rem;
+    height: 7rem;
     margin-top: 0.75rem;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
+    text-align: center;
   }
 
 </style>

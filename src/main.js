@@ -12,6 +12,8 @@ import baseUrl from './utils/baseUrl'
 // import $ from 'n-zepto'
 // import zepto from 'zepto'
 import '@/utils/H5Methods.js'
+import '@/utils/rem.js'
+
 // Vue.prototype.$ = zepto
 
 Vue.use(Vuex)
