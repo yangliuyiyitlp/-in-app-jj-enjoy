@@ -142,22 +142,23 @@
   .list {
     background-color: #fff;
   }
+ul{
+  overflow: hidden;
+}
+  li {
+    float: left;
+    margin: 0.75rem 0.75rem 0;
+    width: 17.25rem;
+    height: 7rem;
+  }
 
   li img {
-    display: inline-block;
-    /*width:345px;*/
-    /*height:140px;*/
-    /*margin-top: 15px;*/
-    /*-webkit-border-radius: 12px;*/
-    /*-moz-border-radius: 12px;*/
-    /*border-radius: 12px;*/
-    text-align: center;
-    width:17.25rem;
-    height:7rem;
-    margin-top: 0.75rem;
+    width: 100%;
+    height: 100%;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
   }
+
 
 </style>

@@ -1,14 +1,10 @@
 <template>
-  <div class="list">
-    <!--<div id="apptest5" @click="toShare">shareActivityPlatform</div>-->
-    <!--<div id="apptest1" @click="toHome">goToHomeEvent</div>-->
-    <!--<div id="apptest2" @click="toScan">toScan</div>-->
-    <!--<div id="apptest3" @click="goToScanSpecialEvent">goToScanSpecialEvent</div>-->
-    <!--<div id="apptest4" @click="toLogin">gotoLogin</div>-->
-
+  <div id="welfareList">
     <ul>
-      <li v-for="(item, index) in list" @click="goShare(item)">
+      <li v-for="item in list" :key="item.id" @click="shopDetail(item.id)">
         <img v-lazy="item.img_path">
+        <span class="shopTitle">{{item.welfare_titile}}</span>
+        <span class="shopLimit">{{item.welfare_sec_title}}</span>
       </li>
     </ul>
   </div>
@@ -29,7 +25,7 @@
     },
     created () {
       // 将ues保存在本地中
-      this.saveUser()
+//      this.saveUser()
       this.getList()
     },
     // 导航离开该组件时把位置存起来
@@ -68,7 +64,7 @@
 //      })
     },
     methods: {
-      // 获取列表
+      // 获取赳赳福利列表
       getList () {
         this.userId = nativeMethods.getQS('userId')
         this.isApp = nativeMethods.getQS('isApp')
@@ -85,8 +81,9 @@
         } else {
           platform = 2
         }
-        let getListUrl = '/ac/list/' + this.cityName + '/' + this.isApp + '/' + platform
-        getListUrl = '/ac/list/default/1/2'
+//        /wc/list/{cityName}/{isApp}/{os}
+        let getListUrl = '/wc/list/' + this.cityName + '/' + this.isApp + '/' + platform
+        getListUrl = '/wc/list/sh/0/1'
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
@@ -98,23 +95,14 @@
             console.error(err)
           })
       },
+      // 去商家福利详情页面
+      shopDetail (id) {
+//        console.log(id)
+        this.$router.push({name: 'welfare.detail', params: {id: id}})
+      },
       // 将ues保存在本地中
       saveUser () {
         sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
-      },
-      // 触发分享功能
-      goShare (data) {
-//        console.log(data)
-        location.href = data.activity_path
-//        console.log(data.shareUrl)
-//        console.log(data.id)
-//        if (data.isSelf === 1) {
-//          let str = '?userId=' + this.userId + '&adId=' + data.id + '&isApp=0'
-//          data.shareUrl = data.shareUrl + str
-//        }
-        this.arr = [data.sharePlatform, data.shareUrl, data.shareTitle, data.shareContent, data.sharePic]
-//        console.log(this.arr)
-        nativeMethods.toShare(this.arr)
       }
 //      toHome () {
 //        nativeMethods.toHome()
@@ -139,19 +127,51 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .list {
+  #welfareList {
     background-color: #fff;
+    padding-top: 1rem;
   }
 
-  li img {
-    display: inline-block;
-    width: 17.25rem;
-    height: 7rem;
-    margin-top: 0.75rem;
+  ul {
+    overflow: hidden;
+  }
+
+  li {
+    float: left;
+    width: 8.25rem;
+    height: 11rem;
+    margin-bottom: 0.75rem;
+    margin-left: 0.75rem;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
-    text-align: center;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.1);
+  }
+
+  li img {
+    width: 8.25rem;
+    height: 8.25rem;
+  }
+
+  span {
+    display: block;
+    margin-left: 0.5rem;
+    text-align: left;
+  }
+
+  .shopTitle {
+    margin-top: 0.35rem;
+    font-size: 0.7rem;
+    color: #4D4E4F;
+  }
+
+  .shopLimit {
+    margin-top: 0.1rem;
+    font-size: 0.6rem;
+    color: #bbb;
   }
 
 </style>

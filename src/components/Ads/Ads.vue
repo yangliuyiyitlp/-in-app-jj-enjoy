@@ -1,14 +1,15 @@
 <template>
-  <div class="welfare">
-    <h6>赳赳福利<i></i></h6>
-    <ul>
-      <li v-for="(item, index) in welfareList" @click="goShare(item)">
-        <img v-lazy="item.img_path">
-        <span class="shopTitle">{{item.welfare_titile}}</span>
-        <span class="shopLimit">{{item.welfare_sec_title}}</span>
-      </li>
-    </ul>
+
+  <div class="ads">
+    <mt-swipe id="mySwipe" :auto="0">
+      <mt-swipe-item v-for="item in list" :key="item.id">
+        <a :href="item.activity_path">
+          <img :src="item.img_path" alt="">
+        </a>
+      </mt-swipe-item>
+    </mt-swipe>
   </div>
+
 </template>
 
 
@@ -169,64 +170,28 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  div {
+  .ads {
+    padding: 0.75rem 0.75rem 1.05rem;
     background-color: #fff;
   }
 
-  h6 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #4D4E4F;
-    height: 1.65rem;
-    line-height: 1.65rem;
-    padding: 0.95rem 0.45rem 0.5rem 0.75rem;
-  }
-
-  i {
-    display: inline-block;
-    float: right;
-    width: 1.2rem;
-    height: 1.2rem;
-    background: url('../../assets/img/gomore.png') no-repeat;
-    background-size: 100% 100%;
-    vertical-align: middle;
-  }
-
-  .welfare li {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 9rem;
-    float: left;
-    padding-left: 0.75rem;
-    margin-bottom: 0.65rem;
-  }
-
-  .welfare li img {
-    display: block;
-    width: 8.25rem;
-    height: 8.25rem;
+  #mySwipe {
+    width: 17.25rem;
+    height: 7rem;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
+    -webkit-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
   }
 
-  .welfare .shopTitle {
-    display: block;
-    margin: 0.6rem 0 0.1rem;
-    height: 1rem;
-    font-size: 0.7rem;
-    color: rgba(77, 78, 79, 1);
-    line-height: 1rem;
-  }
-
-  .welfare .shopLimit {
-    display: block;
-    height: 0.85rem;
-    font-size: 0.6rem;
-    color: rgba(187, 187, 187, 1);
-    line-height: 0.85rem;
+  #mySwipe img {
+    width: 100%;
+    height: 100%;
+    -webkit-border-radius: 0.6rem;
+    -moz-border-radius: 0.6rem;
+    border-radius: 0.6rem;
   }
 
 </style>

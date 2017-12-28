@@ -1,14 +1,17 @@
 <template>
-  <div class="welfare">
-    <h6>赳赳福利<i></i></h6>
-    <ul>
-      <li v-for="(item, index) in welfareList" @click="goShare(item)">
-        <img v-lazy="item.img_path">
-        <span class="shopTitle">{{item.welfare_titile}}</span>
-        <span class="shopLimit">{{item.welfare_sec_title}}</span>
-      </li>
-    </ul>
+
+  <div class="activity">
+    <h6>最新活动<i></i></h6>
+    <div class="wrap">
+      <ul>
+        <li v-for="(item, index) in list" @click="goShare(item)">
+          <img v-lazy="item.img_path">
+          <span>活动名称</span>
+        </li>
+      </ul>
+    </div>
   </div>
+
 </template>
 
 
@@ -169,9 +172,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  html, body {
+    overflow: hidden;
+    overflow-y: auto;
+  }
 
-  div {
+  .activity {
     background-color: #fff;
+    margin: 0.5rem 0;
   }
 
   h6 {
@@ -193,40 +201,38 @@
     vertical-align: middle;
   }
 
-  .welfare li {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 9rem;
-    float: left;
-    padding-left: 0.75rem;
-    margin-bottom: 0.65rem;
+  .activity .wrap {
+    width: 100%;
+    overflow-y: auto;
   }
 
-  .welfare li img {
-    display: block;
-    width: 8.25rem;
-    height: 8.25rem;
+  .activity ul {
+    width: 1000%;
+  }
+
+  .activity ul li {
+    float: left;
+    margin-left: 0.75rem;
+  }
+
+  .activity ul img {
+    width: 7.5rem;
+    height: 7.5rem;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
+    -webkit-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.35);
   }
 
-  .welfare .shopTitle {
+  .activity ul span {
     display: block;
-    margin: 0.6rem 0 0.1rem;
+    padding: 0.55rem 0 0.75rem;
     height: 1rem;
     font-size: 0.7rem;
-    color: rgba(77, 78, 79, 1);
+    color: rgba(130, 130, 130, 1);
     line-height: 1rem;
-  }
-
-  .welfare .shopLimit {
-    display: block;
-    height: 0.85rem;
-    font-size: 0.6rem;
-    color: rgba(187, 187, 187, 1);
-    line-height: 0.85rem;
   }
 
 </style>
