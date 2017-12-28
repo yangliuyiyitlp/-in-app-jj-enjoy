@@ -49,21 +49,16 @@
 
 
 <script>
-  import nativeMethods from '@/utils/nativeMethods.js'
+//  import nativeMethods from '@/utils/nativeMethods.js'
 
   export default {
     data () {
       return {
-        userId: '',
-        isApp: '',
-        arr: [],
         detailObj: {},
         imgPath2: []
       }
     },
     created () {
-      this.userId = sessionStorage.getItem('userId')
-      this.isApp = nativeMethods.getQS('isApp')
       this.getDetail()
     },
     methods: {

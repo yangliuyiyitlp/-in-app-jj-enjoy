@@ -11,8 +11,6 @@
     <!--</mt-swipe>-->
     <!--</div>-->
 
-    <ads></ads>
-
     <!--<div class="activity">-->
     <!--<h6>最新活动<i></i></h6>-->
     <!--<div class="wrap">-->
@@ -25,8 +23,6 @@
     <!--</div>-->
     <!--</div>-->
 
-    <activity></activity>
-
     <!--<div class="welfare">-->
     <!--<h6>赳赳福利<i></i></h6>-->
     <!--<ul>-->
@@ -38,6 +34,9 @@
     <!--</ul>-->
     <!--</div>-->
 
+
+    <ads></ads>
+    <activity></activity>
     <welfare></welfare>
 
   </div>
@@ -58,20 +57,11 @@
     },
     data () {
       return {
-        userId: '',
-        isApp: '',
-        cityName: '',
-        list: [],
-        welfareList: []
+        list: []
       }
     },
     created () {
-      // 将ues保存在本地中
-      this.saveUser()
-      this.getList()
-      this.getCarousel()
-      this.getWelfare()
-      this.userId = sessionStorage.getItem('userId')
+      this.saveData()
     },
     methods: {
       // 导航离开该组件时把位置存起来
@@ -88,7 +78,7 @@
           return scrollTop
         }
         let scrollTop = getScrollTop()
-        sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
+        sessionStorage.setItem('HomeScrollTop', scrollTop) // 离开首页路由时把位置存起来
 //      console.log(scrollTop)
         next()
       },
@@ -96,8 +86,7 @@
       updated () {
         let _this = this
         // 返回同一个位置
-        let scrollTop = +sessionStorage.getItem('scrollTop') // 返回页面取出来
-//      console.log(111, scrollTop)
+        let scrollTop = +sessionStorage.getItem('HomeScrollTop') // 返回首页页面取出来
         if (scrollTop) {
           _this.$nextTick(function () {
             window.scroll(0, scrollTop)
@@ -109,99 +98,22 @@
 //        console.log(position)
 //      })
       },
-      // 获取轮播图相关
-      getCarousel () {
-        this.$ajax.get('/ac/carousel')
-          .then(res => {
-            if (res.data.code === 200) {
-//              console.log(res.data.data)
-              this.list = res.data.data
-            }
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      },
-      // 获取活动列表
-      getList () {
-        this.userId = nativeMethods.getQS('userId')
-        this.isApp = nativeMethods.getQS('isApp')
-        if (nativeMethods.getQS('cityName')) {
-          this.cityName = nativeMethods.getQS('cityName')
-        } else {
-          this.cityName = 'default'
-        }
-        let platform = ''
-        let u = navigator.userAgent
-//        判断终端 1:android 2:ios',对应显示不同列表
-        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-          platform = 1
-        } else {
-          platform = 2
-        }
-        let getListUrl = '/ac/list/' + this.cityName + '/' + this.isApp + '/' + platform
-        getListUrl = '/ac/list/default/1/2'
-        this.$ajax.get(getListUrl)
-          .then(res => {
-            if (res.data.code === 200) {
-//              console.log(res.data.data)
-              this.list = res.data.data
-            }
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      },
-      // 获取福利首页列表
-      getWelfare () {
-        this.userId = nativeMethods.getQS('userId')
-        this.isApp = nativeMethods.getQS('isApp')
-        if (nativeMethods.getQS('cityName')) {
-          this.cityName = nativeMethods.getQS('cityName')
-        } else {
-          this.cityName = 'default'
-        }
-        let platform = ''
-        let u = navigator.userAgent
-//        判断终端 1:android 2:ios',对应显示不同列表
-        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-          platform = 1
-        } else {
-          platform = 2
-        }
-        //  /wc/index/{cityName}/{isApp}/{os}
-        let getListUrl = '/wc/index/' + this.cityName + '/' + this.isApp + '/' + platform
-        getListUrl = '/wc/index/default/0/1'
-        this.$ajax.get(getListUrl)
-          .then(res => {
-            console.log(res)
-            if (res.data.code === 200) {
-              console.log(res.data.data)
-              this.welfareList = res.data.data
-              console.log(this.welfareList)
-            }
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      },
-      // 将ues保存在本地中
-      saveUser () {
+      // 将userId等数据保存在本地中
+      saveData () {
         sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
-      },
-      // 触发分享功能
-      goShare (data) {
-//        console.log(data)
-        location.href = data.activity_path
-//        console.log(data.shareUrl)
-//        console.log(data.id)
-//        if (data.isSelf === 1) {
-//          let str = '?userId=' + this.userId + '&adId=' + data.id + '&isApp=0'
-//          data.shareUrl = data.shareUrl + str
-//        }
-        this.arr = [data.share_platform, data.share_url, data.share_title, data.share_content, data.share_pic]
-//        console.log(this.arr)
-        nativeMethods.toShare(this.arr)
+        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
+        if (nativeMethods.getQS('cityName')) {
+          sessionStorage.setItem('cityName', nativeMethods.getQS('cityName'))
+        } else {
+          sessionStorage.setItem('cityName', 'default')
+        }
+        //        判断终端 1:android 2:ios',对应显示不同列表
+        let u = navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
+          sessionStorage.setItem('platform', 1)
+        } else {
+          sessionStorage.setItem('platform', 2)
+        }
       }
     }
   }
@@ -209,133 +121,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  html, body {
-    overflow: hidden;
-    overflow-y: auto;
-  }
 
   #home {
     background-color: #F9F9F9;
-  }
-
-  #home > div {
-    background-color: #fff;
-  }
-
-  .ads {
-    padding: 0.75rem 0.75rem 1.05rem;
-  }
-
-  #mySwipe {
-    width: 17.25rem;
-    height: 7rem;
-    -webkit-border-radius: 0.6rem;
-    -moz-border-radius: 0.6rem;
-    border-radius: 0.6rem;
-    -webkit-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
-    box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
-  }
-
-  #mySwipe img {
-    width: 100%;
-    height: 100%;
-    -webkit-border-radius: 0.6rem;
-    -moz-border-radius: 0.6rem;
-    border-radius: 0.6rem;
-  }
-
-  .activity {
-    margin: 0.5rem 0;
-  }
-
-  h6 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #4D4E4F;
-    height: 1.65rem;
-    line-height: 1.65rem;
-    padding: 0.95rem 0.45rem 0.5rem 0.75rem;
-  }
-
-  i {
-    display: inline-block;
-    float: right;
-    width: 1.2rem;
-    height: 1.2rem;
-    background: url('../../assets/img/gomore.png') no-repeat;
-    background-size: 100% 100%;
-    vertical-align: middle;
-  }
-
-  .activity .wrap {
-    width: 100%;
-    overflow-y: auto;
-  }
-
-  .activity ul {
-    width: 1000%;
-  }
-
-  .activity ul li {
-    float: left;
-    margin-left: 0.75rem;
-  }
-
-  .activity ul img {
-    width: 7.5rem;
-    height: 7.5rem;
-    -webkit-border-radius: 0.6rem;
-    -moz-border-radius: 0.6rem;
-    border-radius: 0.6rem;
-    -webkit-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.35);
-    -moz-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.35);
-    box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.35);
-  }
-
-  .activity ul span {
-    display: block;
-    padding: 0.55rem 0 0.75rem;
-    height: 1rem;
-    font-size: 0.7rem;
-    color: rgba(130, 130, 130, 1);
-    line-height: 1rem;
-  }
-
-  .welfare li {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 9rem;
-    float: left;
-    padding-left: 0.75rem;
-    margin-bottom: 0.65rem;
-  }
-
-  .welfare li img {
-    display: block;
-    width: 8.25rem;
-    height: 8.25rem;
-    -webkit-border-radius: 0.6rem;
-    -moz-border-radius: 0.6rem;
-    border-radius: 0.6rem;
-  }
-
-  .welfare .shopTitle {
-    display: block;
-    margin: 0.6rem 0 0.1rem;
-    height: 1rem;
-    font-size: 0.7rem;
-    color: rgba(77, 78, 79, 1);
-    line-height: 1rem;
-  }
-
-  .welfare .shopLimit {
-    display: block;
-    height: 0.85rem;
-    font-size: 0.6rem;
-    color: rgba(187, 187, 187, 1);
-    line-height: 0.85rem;
   }
 
 </style>

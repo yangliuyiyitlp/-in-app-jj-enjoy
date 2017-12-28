@@ -12,20 +12,15 @@
 
 
 <script>
-  import nativeMethods from '@/utils/nativeMethods.js'
+//  import nativeMethods from '@/utils/nativeMethods.js'
 
   export default {
     data () {
       return {
-        userId: '',
-        isApp: '',
-        cityName: '',
         list: []
       }
     },
     created () {
-      // 将ues保存在本地中
-//      this.saveUser()
       this.getList()
     },
     // 导航离开该组件时把位置存起来
@@ -42,7 +37,7 @@
         return scrollTop
       }
       let scrollTop = getScrollTop()
-      sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
+      sessionStorage.setItem('WelfareListScrollTop', scrollTop) // 离开福利列表路由时把位置存起来
 //      console.log(scrollTop)
       next()
     },
@@ -50,7 +45,7 @@
     updated () {
       let _this = this
       // 返回同一个位置
-      let scrollTop = +sessionStorage.getItem('scrollTop') // 返回页面取出来
+      let scrollTop = +sessionStorage.getItem('WelfareListScrollTop') // 返回福利列表页面取出来
 //      console.log(111, scrollTop)
       if (scrollTop) {
         _this.$nextTick(function () {
@@ -66,23 +61,8 @@
     methods: {
       // 获取赳赳福利列表
       getList () {
-        this.userId = nativeMethods.getQS('userId')
-        this.isApp = nativeMethods.getQS('isApp')
-        if (nativeMethods.getQS('cityName')) {
-          this.cityName = nativeMethods.getQS('cityName')
-        } else {
-          this.cityName = 'default'
-        }
-        let platform = ''
-        let u = navigator.userAgent
-//        判断终端 1:android 2:ios',对应显示不同列表
-        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-          platform = 1
-        } else {
-          platform = 2
-        }
 //        /wc/list/{cityName}/{isApp}/{os}
-        let getListUrl = '/wc/list/' + this.cityName + '/' + this.isApp + '/' + platform
+        let getListUrl = '/wc/list/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
         getListUrl = '/wc/list/sh/0/1'
         this.$ajax.get(getListUrl)
           .then(res => {
@@ -99,28 +79,7 @@
       shopDetail (id) {
 //        console.log(id)
         this.$router.push({name: 'welfare.detail', params: {id: id}})
-      },
-      // 将ues保存在本地中
-      saveUser () {
-        sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
       }
-//      toHome () {
-//        nativeMethods.toHome()
-//      },
-//      toLogin () {
-//        nativeMethods.toLogin()
-//      },
-//      toShare () {
-// //        this.arr = [sharePlatform, shareUrl, shareTitle, shareContent, sharePic]
-// //        console.log(this.arr)
-//        nativeMethods.toShare(this.arr)
-//      },
-//      toScan () {
-//        nativeMethods.toScan()
-//      },
-//      goToScanSpecialEvent () {
-//        nativeMethods.goToScanSpecialEvent()
-//      }
     }
   }
 </script>

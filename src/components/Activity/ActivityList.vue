@@ -21,9 +21,6 @@
   export default {
     data () {
       return {
-        userId: '',
-        isApp: '',
-        cityName: '',
         list: []
       }
     },
@@ -46,7 +43,7 @@
         return scrollTop
       }
       let scrollTop = getScrollTop()
-      sessionStorage.setItem('scrollTop', scrollTop) // 离开路由时把位置存起来
+      sessionStorage.setItem('ActivityListScrollTop', scrollTop) // 离开活动列表路由时把位置存起来
 //      console.log(scrollTop)
       next()
     },
@@ -54,7 +51,7 @@
     updated () {
       let _this = this
       // 返回同一个位置
-      let scrollTop = +sessionStorage.getItem('scrollTop') // 返回页面取出来
+      let scrollTop = +sessionStorage.getItem('ActivityListScrollTop') // 返回活动列表页面取出来
 //      console.log(111, scrollTop)
       if (scrollTop) {
         _this.$nextTick(function () {
@@ -70,22 +67,7 @@
     methods: {
       // 获取列表
       getList () {
-        this.userId = nativeMethods.getQS('userId')
-        this.isApp = nativeMethods.getQS('isApp')
-        if (nativeMethods.getQS('cityName')) {
-          this.cityName = nativeMethods.getQS('cityName')
-        } else {
-          this.cityName = 'default'
-        }
-        let platform = ''
-        let u = navigator.userAgent
-//        判断终端 1:android 2:ios',对应显示不同列表
-        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-          platform = 1
-        } else {
-          platform = 2
-        }
-        let getListUrl = '/ac/list/' + this.cityName + '/' + this.isApp + '/' + platform
+        let getListUrl = '/ac/list/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
         getListUrl = '/ac/list/default/1/2'
         this.$ajax.get(getListUrl)
           .then(res => {
@@ -97,10 +79,6 @@
           .catch(err => {
             console.error(err)
           })
-      },
-      // 将ues保存在本地中
-      saveUser () {
-        sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
       },
       // 触发分享功能
       goShare (data) {
