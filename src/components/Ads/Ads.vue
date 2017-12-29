@@ -48,6 +48,9 @@
       goShare (data) {
 //        console.log(data)
         location.href = data.activity_path
+        if (data.sharePlatform === null) {
+          data.sharePlatform = ''
+        }
         this.arr = [data.share_platform, data.share_url, data.share_title, data.share_content, data.share_pic]
 //        console.log(this.arr)
         nativeMethods.toShare(this.arr)

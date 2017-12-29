@@ -1,7 +1,7 @@
 <template>
   <div id="welfareList">
     <ul>
-      <li v-for="item in list" :key="item.id" @click="shopDetail(item.id)">
+      <li v-for="item in list" :key="item.id" @click="goWelfareDetail(item.id)">
         <img v-lazy="item.img_path">
         <span class="shopTitle">{{item.welfare_titile}}</span>
         <span class="shopLimit">{{item.welfare_sec_title}}</span>
@@ -76,7 +76,7 @@
           })
       },
       // 去商家福利详情页面
-      shopDetail (id) {
+      goWelfareDetail (id) {
 //        console.log(id)
         this.$router.push({name: 'welfare.detail', params: {id: id}})
       }

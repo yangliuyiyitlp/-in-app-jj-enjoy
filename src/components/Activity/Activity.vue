@@ -1,7 +1,7 @@
 <template>
 
   <div class="activity">
-    <h6 @click="goMore">最新活动<i></i></h6>
+    <h6 @click="goActivityList">最新活动<i></i></h6>
     <div class="wrap">
       <ul>
         <li v-for="(item, index) in list" @click="goShare(item)" :key="index">
@@ -44,19 +44,16 @@
           })
       },
       // 跳转至最新活动列表页面
-      goMore () {
+      goActivityList () {
         this.$router.push({name: 'activity.list'})
       },
-      // 触发分享功能
+      // 跳转到详情页面的同时 触发分享功能
       goShare (data) {
 //        console.log(data)
         location.href = data.activity_path
-//        console.log(data.shareUrl)
-//        console.log(data.id)
-//        if (data.isSelf === 1) {
-//          let str = '?userId=' + this.userId + '&adId=' + data.id + '&isApp=0'
-//          data.shareUrl = data.shareUrl + str
-//        }
+        if (data.sharePlatform === null) {
+          data.sharePlatform = ''
+        }
         this.arr = [data.share_platform, data.share_url, data.share_title, data.share_content, data.share_pic]
 //        console.log(this.arr)
         nativeMethods.toShare(this.arr)

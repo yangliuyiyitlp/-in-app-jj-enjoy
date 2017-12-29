@@ -21,12 +21,11 @@
   export default {
     data () {
       return {
-        list: []
+        list: [],
+        arr: [] // 分享所需参数
       }
     },
     created () {
-      // 将ues保存在本地中
-      this.saveUser()
       this.getList()
     },
     // 导航离开该组件时把位置存起来
@@ -72,7 +71,7 @@
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
-              console.log(res.data.data)
+//              console.log(res.data.data)
               this.list = res.data.data
             }
           })
@@ -84,12 +83,9 @@
       goShare (data) {
 //        console.log(data)
         location.href = data.activity_path
-//        console.log(data.shareUrl)
-//        console.log(data.id)
-//        if (data.isSelf === 1) {
-//          let str = '?userId=' + this.userId + '&adId=' + data.id + '&isApp=0'
-//          data.shareUrl = data.shareUrl + str
-//        }
+        if (data.sharePlatform === null) {
+          data.sharePlatform = ''
+        }
         this.arr = [data.share_platform, data.share_url, data.share_title, data.share_content, data.share_pic]
 //        console.log(this.arr)
         nativeMethods.toShare(this.arr)
@@ -120,9 +116,11 @@
   .list {
     background-color: #fff;
   }
-ul{
-  overflow: hidden;
-}
+
+  ul {
+    overflow: hidden;
+  }
+
   li {
     float: left;
     margin: 0.75rem 0.75rem 0;

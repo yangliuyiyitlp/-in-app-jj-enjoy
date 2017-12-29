@@ -1,8 +1,8 @@
 <template>
   <div class="welfare">
-    <h6 @click="goMore">赳赳福利<i></i></h6>
+    <h6 @click="goWelfareList">赳赳福利<i></i></h6>
     <ul>
-      <li v-for="(item, index) in welfareList" @click="goShare(item)" :key="item.id">
+      <li v-for="(item, index) in welfareList"  @click="goWelfareDetail(item)" :key="item.id">
         <img v-lazy="item.img_path">
         <span class="shopTitle">{{item.welfare_titile}}</span>
         <span class="shopLimit">{{item.welfare_sec_title}}</span>
@@ -16,7 +16,6 @@
   //  import nativeMethods from '@/utils/nativeMethods.js'
 
   export default {
-    props: ['childMsg'],
     data () {
       return {
         welfareList: []
@@ -43,8 +42,13 @@
             console.error(err)
           })
       },
+      // 去商家福利详情页面
+      goWelfareDetail (data) {
+//        console.log(data)
+        this.$router.push({name: 'welfare.detail', params: {id: data.id}})
+      },
       // 跳转至福利列表页面
-      goMore () {
+      goWelfareList () {
         this.$router.push({name: 'welfare.list'})
       }
 //      // 触发分享功能

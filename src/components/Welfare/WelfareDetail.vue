@@ -8,9 +8,9 @@
       </mt-swipe>
 
       <div class="welfare">
-        <p>美丽的商家满100减50</p>
-        <span class="left"><b></b><span>3天12小时23分</span></span>
-        <span class="right">每人只限1张</span>
+        <p>{{detailObj.welfareTitle}}</p>
+        <span class="left"><b></b><span ref="formatTime">3天12小时23分</span></span>
+        <span class="right">{{detailObj.welfareSecTitle}}</span>
       </div>
 
     </div>
@@ -19,49 +19,88 @@
       <div class="title">
         <span class="one"></span>
         <span class="two">地址:</span>
-        <span class="three">{{detailObj.businessInfo}}</span>
+        <span class="three" ref="three">{{detailObj.businessInfo}}</span>
       </div>
       <div></div>
     </div>
 
     <div class="text">
       <h5>活动说明</h5>
-      <p>{{detailObj.description}}
-        <!--微软雅黑是美国微软公司委托中国北大方正电子有限公司设计的一款全面支持ClearType技术的字体。-->
-        <!--Monotype公司负责字体Hinting工作。它属于OpenType类型，文件名是MSYH.TTF，字体设计上属于无衬线字体和黑体。-->
-        <!--这种字体每个字的造价成本在100美元左右。该字体家族还包括“微软雅黑Bold”（粗体），文件名为MSYHBD.TTF。-->
-        <!--这个粗体不是单纯的将普通字符加粗，而是在具体笔画上分别进行处理，因此是独立的一个字体。微软雅黑随简体中文版Windows Vista一起发布，-->
-        <!--是Windows Vista默认字体。另外，Microsoft Office 2007简体中文版也附带这个字体。-->
-        <!--当使用于不能显示中文字型名称的系统时，会显示为Microsoft YaHei-->
-        <!--Monotype公司负责字体Hinting工作。它属于OpenType类型，文件名是MSYH.TTF，字体设计上属于无衬线字体和黑体。-->
-        <!--这种字体每个字的造价成本在100美元左右。该字体家族还包括“微软雅黑Bold”（粗体），文件名为MSYHBD.TTF。-->
-        <!--这个粗体不是单纯的将普通字符加粗，而是在具体笔画上分别进行处理，因此是独立的一个字体。微软雅黑随简体中文版Windows Vista一起发布，-->
-        <!--是Windows Vista默认字体。另外，Microsoft Office 2007简体中文版也附带这个字体。-->
-        <!--当使用于不能显示中文字型名称的系统时，会显示为Microsoft YaHei-->
-      </p>
+      <p>{{detailObj.description}}</p>
     </div>
 
     <div id="footer">
-      <div class="btn">立即领取</div>
+      <div class="btn" @click="getWelfare">立即领取</div>
     </div>
   </div>
 </template>
 
 
 <script>
-//  import nativeMethods from '@/utils/nativeMethods.js'
+  import nativeMethods from '@/utils/nativeMethods.js'
 
   export default {
     data () {
       return {
         detailObj: {},
-        imgPath2: []
+        imgPath2: [],
+        flag: 1 // 控制按钮是否可点击
       }
     },
     created () {
       this.getDetail()
+      this.getInit()
     },
     methods: {
+      // 初始化信息 按钮
+      getInit () {
+//        /wc/init/{userId}/{welfareId}
+        // todo 登录才调用
+        if (+sessionStorage.getItem('userId') !== 0) {
+          let url = '/wc/init/' + sessionStorage.getItem('userId') + this.$route.params.id
+          url = '/wc/init/2c9094435f8055a1015f80c5711d0029/09a100377ca8441d8d62cf6333e42cca'
+          this.$ajax.get(url)
+            .then(res => {
+              console.log(res.data)
+              if (res.data.code === 200) {
+//                "msg":"成功" 可以正常领取
+                document.querySelector('#footer .btn').innerText = '立即领取'
+                this.flag = 1
+              } else {
+                this.flag = 0
+                if (res.data.code === 501) {
+//                "msg":"活动结束"
+                  document.querySelector('#footer .btn').innerText = res.data.msg
+                  this.$toast({
+                    message: res.data.msg
+                  })
+                } else if (res.data.code === 502) {
+//                  "msg":"已领完"
+                  document.querySelector('#footer .btn').innerText = res.data.msg
+                  this.$toast({
+                    message: res.data.msg
+                  })
+                } else if (res.data.code === 503) {
+//                  "msg":"总领取次数用完"
+                  document.querySelector('#footer .btn').innerText = res.data.msg
+                  this.$toast({
+                    message: res.data.msg
+                  })
+                } else if (res.data.code === 504) {
+//                  "msg":"当天次数用完"
+                  document.querySelector('#footer .btn').innerText = res.data.msg
+                  this.$toast({
+                    message: res.data.msg
+                  })
+                }
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      },
+      // 获取详情信息
       getDetail () {
 //        /wc/detail/{id}
 //        console.log(this.$route.params.id)
@@ -72,26 +111,130 @@
 //            console.log(res.data)
             if (res.data.code === 200) {
               this.detailObj = res.data.data
-//              console.log(this.detailObj.imgPath2)
+              console.log(this.detailObj)
+              // 获取轮播图列表
               this.imgPath2 = this.detailObj.imgPath2.split(',')
 //              console.log(this.imgPath2)
-              console.log(this.detailObj)
-              this.detailObj.businessInfo = '一二三五五六七八八七七八七八七八八'
-              // 商家地址没有时 隐藏address
-              if (!this.detailObj.businessInfo) {
-                console.log(document.querySelector('.text'))
-                document.querySelector('.text').style.marginTop = '1.1rem'
-              }
-              // 商家地址过长时 增加高度
-              if (this.detailObj.businessInfo.length > 18) {
-                document.querySelector('.address').style.height = '8.15rem'
-                document.querySelector('.text').style.marginTop = '4.6rem'
-              }
+//              console.log(this.detailObj)
+//              this.detailObj.businessInfo = '一二三五七八七八八五六七二三五七八七八七八七八八'
+//              this.detailObj.businessInfo = ''
             }
           })
           .catch(err => {
             console.log(err)
           })
+      },
+      // 用户点击获取福利
+      getWelfare () {
+        // 判断用户是否登录
+        sessionStorage.setItem('userId', '222')
+        if (+sessionStorage.getItem('userId') === 0) {
+          // 未登录去登录
+          nativeMethods.toLogin()
+        } else {
+          // 已经登录获取福利
+          if (this.flag) {
+            this.joinWelfare()
+            console.log(this.detailObj.id)
+          }
+        }
+      },
+      // todo 参与领取优惠券的多种逻辑
+      joinWelfare () {
+        // todo 根据返回的code做判断
+//        /wc/join/{userId}/{welfareId}
+        this.$ajax.post('/wc/join', {
+//          'userId': sessionStorage.getItem('userId'),
+//          'welfareId': this.$route.params.id
+          'userId': '2c9094435f8055a1015f80c5711d0029',
+          'welfareId': '09a100377ca8441d8d62cf6333e42cca'
+        })
+          .then(res => {
+            console.log(res.data)
+            if (res.data.code === 409) {
+//              "msg":"领取成功，今天还可以领取x-1次哦~"
+              this.$toast({
+                message: res.data.msg
+              })
+              this.flag = 1
+            } else {
+              this.flag = 0
+              if (res.data.code === 200) {
+//               "msg":"成功"
+                document.querySelector('#footer .btn').innerText = res.data.msg
+                this.$toast({
+                  message: res.data.msg
+                })
+              } else if (res.data.code === 501) {
+//              "msg":"活动结束"
+                document.querySelector('#footer .btn').innerText = res.data.msg
+                this.$toast({
+                  message: res.data.msg
+                })
+              } else if (res.data.code === 403) {
+//              "msg":"信用积分不足"
+                document.querySelector('#footer .btn').innerText = res.data.msg
+                this.$toast({
+                  message: res.data.msg
+                })
+              } else if (res.data.code === 505) {
+//              "msg":"取成功，今日领取结束，明天再来吧!"
+                document.querySelector('#footer .btn').innerText = '已领取'
+                this.$toast({
+                  message: res.data.msg
+                })
+              }
+            }
+          })
+          .catch(err => {
+            console.error(err)
+          })
+      },
+      // 根据businessInfo的长度给定不同的样式
+      changeStyle () {
+//          if (!this.detailObj.isGoods) {
+//            document.querySelector('.text').style.marginTop = '1.1rem'
+//          }
+        if (!this.detailObj.businessInfo) {
+          document.querySelector('.text').style.marginTop = '1.1rem'
+        }
+        if (this.$refs.three.clientHeight && this.$refs.three.clientHeight / 20 < 1) {
+          document.querySelector('.address').style.height = '7rem'
+          document.querySelector('.text').style.marginTop = '3.45rem'
+        }
+        if (this.$refs.three.clientHeight / 20 > 1) {
+          document.querySelector('.address').style.height = '8.15rem'
+          document.querySelector('.text').style.marginTop = '4.6rem'
+        }
+      },
+      // 格式化倒计时时间
+      formatData () {
+        let t = this.detailObj.endTime - new Date()
+//        t = 0
+        // 活动结束 按钮显示已结束
+        // todo 此处按钮禁止点击事件 样式是否下需要改变?
+        if (t <= 0) {
+          document.querySelector('.left span').innerText = '0天0小时0分'
+          document.querySelector('#footer .btn').innerText = '已结束'
+          this.flag = 0
+        } else {
+          let minutes = Math.floor((t / 1000 / 60) % 60)
+          let hours = Math.floor((t / (1000 * 60 * 60)) % 24)
+          let days = Math.floor(t / (1000 * 60 * 60 * 24))
+          let str = days + '天' + hours + '小时' + minutes + '分'
+          console.log(str)
+          document.querySelector('.left span').innerText = str
+        }
+      }
+    },
+    watch: {
+      detailObj: function () {
+        this.$nextTick(() => {
+          // 根据businessInfo的长度给定不同的样式
+          this.changeStyle()
+          // 格式化倒计时时间
+          this.formatData()
+        })
       }
     }
   }
@@ -163,6 +306,7 @@
     background: url('../../assets/img/time.png') no-repeat;
     background-size: 100% 100%;
     vertical-align: middle;
+    margin-right: 0.3rem;
   }
 
   span.right {

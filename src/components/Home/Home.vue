@@ -1,40 +1,6 @@
 <template>
   <div id="home">
 
-    <!--<div class="ads">-->
-    <!--<mt-swipe id="mySwipe" :auto="0">-->
-    <!--<mt-swipe-item v-for="item in list" :key="item.id">-->
-    <!--<a :href="item.activity_path">-->
-    <!--<img :src="item.img_path" alt="">-->
-    <!--</a>-->
-    <!--</mt-swipe-item>-->
-    <!--</mt-swipe>-->
-    <!--</div>-->
-
-    <!--<div class="activity">-->
-    <!--<h6>最新活动<i></i></h6>-->
-    <!--<div class="wrap">-->
-    <!--<ul>-->
-    <!--<li v-for="(item, index) in list" @click="goShare(item)">-->
-    <!--<img v-lazy="item.img_path">-->
-    <!--<span>活动名称</span>-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <!--<div class="welfare">-->
-    <!--<h6>赳赳福利<i></i></h6>-->
-    <!--<ul>-->
-    <!--<li v-for="(item, index) in welfareList" @click="goShare(item)">-->
-    <!--<img v-lazy="item.img_path">-->
-    <!--<span class="shopTitle">{{item.welfare_titile}}</span>-->
-    <!--<span class="shopLimit">{{item.welfare_sec_title}}</span>-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--</div>-->
-
-
     <ads></ads>
     <activity></activity>
     <welfare></welfare>

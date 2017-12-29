@@ -43,8 +43,8 @@ let nativeMethods = {
   toLogin: function () {
     // console.log(u)
     // console.log('toLogin')
-    // console.log(this.getQS('userId'))
-    if (sessionStorage.getItem('userId') === '0' || sessionStorage.getItem('userId') === 0) {
+    if (+sessionStorage.getItem('userId') === 0) {
+      // console.log('toLogin')
       if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
         window.sharePlatform.goToLogin()
       } else {
