@@ -1,7 +1,8 @@
 <template>
   <div id="detail">
     <div class="top">
-      <mt-swipe id="mySwipe" :auto="0">
+      <!--<mt-swipe id="mySwipe" :auto="0">-->
+      <mt-swipe id="mySwipe">
         <mt-swipe-item v-for="(item,index) in imgPath2" :key="index">
           <img :src="item" alt="">
         </mt-swipe-item>
@@ -9,7 +10,7 @@
 
       <div class="welfare">
         <p>{{detailObj.welfareTitle}}</p>
-        <span class="left"><b></b><span ref="formatTime">3天12小时23分</span></span>
+        <span class="left"><b></b><span ref="formatTime"></span></span>
         <span class="right">{{detailObj.welfareSecTitle}}</span>
       </div>
 
@@ -57,41 +58,30 @@
 //        /wc/init/{userId}/{welfareId}
         // todo 登录才调用
         if (+sessionStorage.getItem('userId') !== 0) {
-          let url = '/wc/init/' + sessionStorage.getItem('userId') + this.$route.params.id
-          url = '/wc/init/2c9094435f8055a1015f80c5711d0029/09a100377ca8441d8d62cf6333e42cca'
+          let url = '/wc/init/' + sessionStorage.getItem('userId') + '/' + this.$route.params.id
+//          url = '/wc/init/2c9094435f8055a1015f80c5711d0029/09a100377ca8441d8d62cf6333e42cca'
           this.$ajax.get(url)
             .then(res => {
               console.log(res.data)
+              let btnBox = document.querySelector('#footer .btn')
               if (res.data.code === 200) {
 //                "msg":"成功" 可以正常领取
-                document.querySelector('#footer .btn').innerText = '立即领取'
+                btnBox.innerText = '立即领取'
                 this.flag = 1
               } else {
                 this.flag = 0
                 if (res.data.code === 501) {
 //                "msg":"活动结束"
-                  document.querySelector('#footer .btn').innerText = res.data.msg
-                  this.$toast({
-                    message: res.data.msg
-                  })
+                  btnBox.innerText = res.data.msg
                 } else if (res.data.code === 502) {
 //                  "msg":"已领完"
-                  document.querySelector('#footer .btn').innerText = res.data.msg
-                  this.$toast({
-                    message: res.data.msg
-                  })
+                  btnBox.innerText = res.data.msg
                 } else if (res.data.code === 503) {
 //                  "msg":"总领取次数用完"
-                  document.querySelector('#footer .btn').innerText = res.data.msg
-                  this.$toast({
-                    message: res.data.msg
-                  })
+                  btnBox.innerText = res.data.msg
                 } else if (res.data.code === 504) {
 //                  "msg":"当天次数用完"
-                  document.querySelector('#footer .btn').innerText = res.data.msg
-                  this.$toast({
-                    message: res.data.msg
-                  })
+                  btnBox.innerText = res.data.msg
                 }
               }
             })
@@ -105,7 +95,7 @@
 //        /wc/detail/{id}
 //        console.log(this.$route.params.id)
         let getDetailUrl = '/wc/detail/' + this.$route.params.id
-        getDetailUrl = '/wc/detail/09a100377ca8441d8d62cf6333e42cca'
+//        getDetailUrl = '/wc/detail/09a100377ca8441d8d62cf6333e42cca'
         this.$ajax.get(getDetailUrl)
           .then(res => {
 //            console.log(res.data)
@@ -113,7 +103,11 @@
               this.detailObj = res.data.data
               console.log(this.detailObj)
               // 获取轮播图列表
-              this.imgPath2 = this.detailObj.imgPath2.split(',')
+              if (this.detailObj.imgPath2.indexOf(',') === -1) {
+                this.imgPath2[0] = this.detailObj.imgPath2
+              } else {
+                this.imgPath2 = this.detailObj.imgPath2.split(',')
+              }
 //              console.log(this.imgPath2)
 //              console.log(this.detailObj)
 //              this.detailObj.businessInfo = '一二三五七八七八八五六七二三五七八七八七八七八八'
@@ -144,15 +138,16 @@
         // todo 根据返回的code做判断
 //        /wc/join/{userId}/{welfareId}
         this.$ajax.post('/wc/join', {
-//          'userId': sessionStorage.getItem('userId'),
+          'userId': sessionStorage.getItem('userId'),
 //          'welfareId': this.$route.params.id
-          'userId': '2c9094435f8055a1015f80c5711d0029',
           'welfareId': '09a100377ca8441d8d62cf6333e42cca'
         })
           .then(res => {
             console.log(res.data)
+            let btnBox = document.querySelector('#footer .btn')
             if (res.data.code === 409) {
 //              "msg":"领取成功，今天还可以领取x-1次哦~"
+              btnBox.innerText = '立即领取'
               this.$toast({
                 message: res.data.msg
               })
@@ -161,28 +156,20 @@
               this.flag = 0
               if (res.data.code === 200) {
 //               "msg":"成功"
-                document.querySelector('#footer .btn').innerText = res.data.msg
-                this.$toast({
-                  message: res.data.msg
-                })
+                btnBox.innerText = res.data.msg
+                this.toast(res.data.msg)
               } else if (res.data.code === 501) {
 //              "msg":"活动结束"
-                document.querySelector('#footer .btn').innerText = res.data.msg
-                this.$toast({
-                  message: res.data.msg
-                })
+                btnBox.innerText = res.data.msg
+                this.toast(res.data.msg)
               } else if (res.data.code === 403) {
 //              "msg":"信用积分不足"
-                document.querySelector('#footer .btn').innerText = res.data.msg
-                this.$toast({
-                  message: res.data.msg
-                })
+                btnBox.innerText = res.data.msg
+                this.toast(res.data.msg)
               } else if (res.data.code === 505) {
 //              "msg":"取成功，今日领取结束，明天再来吧!"
-                document.querySelector('#footer .btn').innerText = '已领取'
-                this.$toast({
-                  message: res.data.msg
-                })
+                btnBox.innerText = '已领取'
+                this.toast(res.data.msg)
               }
             }
           })
@@ -190,21 +177,29 @@
             console.error(err)
           })
       },
+      // 弹框
+      toast (msg) {
+        this.$toast({
+          message: msg
+        })
+      },
       // 根据businessInfo的长度给定不同的样式
       changeStyle () {
 //          if (!this.detailObj.isGoods) {
 //            document.querySelector('.text').style.marginTop = '1.1rem'
 //          }
+        let textBox = document.querySelector('.text')
+        let addressBox = document.querySelector('.address')
         if (!this.detailObj.businessInfo) {
-          document.querySelector('.text').style.marginTop = '1.1rem'
+          textBox.style.marginTop = '1.1rem'
         }
         if (this.$refs.three.clientHeight && this.$refs.three.clientHeight / 20 < 1) {
-          document.querySelector('.address').style.height = '7rem'
-          document.querySelector('.text').style.marginTop = '3.45rem'
+          addressBox.style.height = '7rem'
+          textBox.style.marginTop = '3.45rem'
         }
         if (this.$refs.three.clientHeight / 20 > 1) {
-          document.querySelector('.address').style.height = '8.15rem'
-          document.querySelector('.text').style.marginTop = '4.6rem'
+          addressBox.style.height = '8.15rem'
+          textBox.style.marginTop = '4.6rem'
         }
       },
       // 格式化倒计时时间

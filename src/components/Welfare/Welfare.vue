@@ -4,7 +4,7 @@
     <ul>
       <li v-for="(item, index) in welfareList"  @click="goWelfareDetail(item)" :key="item.id">
         <img v-lazy="item.img_path">
-        <span class="shopTitle">{{item.welfare_titile}}</span>
+        <span class="shopTitle">{{item.welfare_title}}</span>
         <span class="shopLimit">{{item.welfare_sec_title}}</span>
       </li>
     </ul>
@@ -27,9 +27,8 @@
     methods: {
       // 获取福利首页列表
       getWelfare () {
-        //  /wc/index/{cityName}/{isApp}/{os}
-        let getListUrl = '/wc/index/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
-        getListUrl = '/wc/index/default/0/1'
+        //  /wc/index/{cityName}/{isApp}
+        let getListUrl = '/wc/index/' + sessionStorage.getItem('cityName')
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
@@ -44,7 +43,6 @@
       },
       // 去商家福利详情页面
       goWelfareDetail (data) {
-//        console.log(data)
         this.$router.push({name: 'welfare.detail', params: {id: data.id}})
       },
       // 跳转至福利列表页面

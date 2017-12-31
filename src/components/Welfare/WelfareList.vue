@@ -3,7 +3,7 @@
     <ul>
       <li v-for="item in list" :key="item.id" @click="goWelfareDetail(item.id)">
         <img v-lazy="item.img_path">
-        <span class="shopTitle">{{item.welfare_titile}}</span>
+        <span class="shopTitle">{{item.welfare_title}}</span>
         <span class="shopLimit">{{item.welfare_sec_title}}</span>
       </li>
     </ul>
@@ -46,24 +46,18 @@
       let _this = this
       // 返回同一个位置
       let scrollTop = +sessionStorage.getItem('WelfareListScrollTop') // 返回福利列表页面取出来
-//      console.log(111, scrollTop)
       if (scrollTop) {
         _this.$nextTick(function () {
           window.scroll(0, scrollTop)
         })
       }
-//      this.$nextTick(function () {
-//        let position = this.$store.state.position // 返回页面取出来
-//        window.scroll(0, position)
-//        console.log(position)
-//      })
     },
     methods: {
       // 获取赳赳福利列表
       getList () {
-//        /wc/list/{cityName}/{isApp}/{os}
-        let getListUrl = '/wc/list/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
-        getListUrl = '/wc/list/sh/0/1'
+//        /wc/list/{cityName}/{isApp}
+        let getListUrl = '/wc/list/' + sessionStorage.getItem('cityName')
+//        getListUrl = '/wc/list/sh/0'
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {

@@ -3,10 +3,11 @@
   <div class="ads">
 
     <!--{{childMsg.cityName}}-->
-    <mt-swipe id="mySwipe" :auto="0">
+    <!--<mt-swipe id="mySwipe" :auto="0">-->
+    <mt-swipe id="mySwipe">
       <mt-swipe-item v-for="(item,index) in list" :key="index">
         <div @click="goShare(item)">
-          <img :src="item.img_path" alt="">
+          <img :src="item.carousel_img" alt="">
         </div>
       </mt-swipe-item>
     </mt-swipe>
@@ -32,7 +33,7 @@
       getCarousel () {
 //        /ac/carousel/{cityName}/{isApp}/{os}
         let getListUrl = '/ac/carousel/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
-        getListUrl = '/ac/carousel/sh/1/2'
+//        getListUrl = '/ac/carousel/sh/1/1'
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
@@ -76,14 +77,21 @@
     -webkit-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
     -moz-box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
     box-shadow: 0 0.2rem 0.8rem 0 rgba(0, 0, 0, 0.25);
+    overflow: hidden;
   }
 
-  #mySwipe img {
+  #mySwipe img, #mySwipe div {
     width: 100%;
-    height: 100%;
+    height: 7rem;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
   }
+
+  /*#mySwipe .mint-swipe-item {*/
+    /*-webkit-border-radius: 0.6rem;*/
+    /*-moz-border-radius: 0.6rem;*/
+    /*border-radius: 0.6rem;*/
+  /*}*/
 
 </style>
