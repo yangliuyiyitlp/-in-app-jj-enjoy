@@ -25,6 +25,7 @@ Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 Axios.defaults.timeout = 3000
 Vue.prototype.$ajax = Axios
 console.log(process.env.NODE_ENV)
+
 // 拦截器操作放在全局性的地方
 Axios.interceptors.request.use(
   config => {
@@ -37,17 +38,22 @@ Axios.interceptors.request.use(
   error => {
     MintUI.Indicator.close()// 响应失败关闭
     MintUI.Toast({
-      message: '加载超时',
-      duration: 3000
+      message: '加载超时'
     })
     return Promise.reject(error)
   })
 // 响应拦截器
-Axios.interceptors.response.use(
-  response => {
-    MintUI.Indicator.close()// 响应回来后关闭
-    return response
+// http响应拦截器
+Axios.interceptors.response.use(data => { // 响应成功关闭loading
+  MintUI.Indicator.close()
+  return data
+}, error => {
+  MintUI.Indicator.close()
+  MintUI.Toast({
+    message: '加载失败'
   })
+  return Promise.reject(error)
+})
 
 // 动态修改 document title
 router.beforeEach((to, from, next) => {

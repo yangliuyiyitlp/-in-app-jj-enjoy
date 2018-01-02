@@ -58,7 +58,7 @@
 //        /wc/init/{userId}/{welfareId}
         // todo 登录才调用
         if (+sessionStorage.getItem('userId') !== 0) {
-          let url = '/wc/init/' + sessionStorage.getItem('userId') + '/' + this.$route.params.id
+          let url = `/wc/init/${sessionStorage.getItem('userId')}/${this.$route.params.id}`
 //          url = '/wc/init/2c9094435f8055a1015f80c5711d0029/09a100377ca8441d8d62cf6333e42cca'
           this.$ajax.get(url)
             .then(res => {
@@ -67,9 +67,11 @@
               if (res.data.code === 200) {
 //                "msg":"成功" 可以正常领取
                 btnBox.innerText = '立即领取'
+                btnBox.style.background = 'linear-gradient(to right, #FD5E33, #F43623)'
                 this.flag = 1
               } else {
                 this.flag = 0
+                btnBox.style.background = '#BBBBBB'
                 if (res.data.code === 501) {
 //                "msg":"活动结束"
                   btnBox.innerText = res.data.msg
@@ -93,8 +95,7 @@
       // 获取详情信息
       getDetail () {
 //        /wc/detail/{id}
-//        console.log(this.$route.params.id)
-        let getDetailUrl = '/wc/detail/' + this.$route.params.id
+        let getDetailUrl = `/wc/detail/${this.$route.params.id}`
 //        getDetailUrl = '/wc/detail/09a100377ca8441d8d62cf6333e42cca'
         this.$ajax.get(getDetailUrl)
           .then(res => {
@@ -121,7 +122,6 @@
       // 用户点击获取福利
       getWelfare () {
         // 判断用户是否登录
-        sessionStorage.setItem('userId', '222')
         if (+sessionStorage.getItem('userId') === 0) {
           // 未登录去登录
           nativeMethods.toLogin()
@@ -129,7 +129,7 @@
           // 已经登录获取福利
           if (this.flag) {
             this.joinWelfare()
-            console.log(this.detailObj.id)
+//            console.log(this.detailObj.id)
           }
         }
       },
@@ -137,28 +137,31 @@
       joinWelfare () {
         // todo 根据返回的code做判断
 //        /wc/join/{userId}/{welfareId}
-        this.$ajax.post('/wc/join', {
+        this.$ajax.post(`/wc/join`, {
           'userId': sessionStorage.getItem('userId'),
-//          'welfareId': this.$route.params.id
-          'welfareId': '09a100377ca8441d8d62cf6333e42cca'
+          'welfareId': this.$route.params.id
+//          'welfareId': '09a100377ca8441d8d62cf6333e42cca'
         })
           .then(res => {
             console.log(res.data)
             let btnBox = document.querySelector('#footer .btn')
-            if (res.data.code === 409) {
-//              "msg":"领取成功，今天还可以领取x-1次哦~"
-              btnBox.innerText = '立即领取'
-              this.$toast({
-                message: res.data.msg
-              })
+            if (res.data.code === 409 || res.data.code === 200) {
               this.flag = 1
+              btnBox.innerText = '立即领取'
+              btnBox.style.background = 'linear-gradient(to right, #FD5E33, #F43623)'
+              if (res.data.code === 409) {
+//                "msg":"领取成功，今天还可以领取x-1次哦~"
+                this.$toast({
+                  message: res.data.msg
+                })
+              } else if (res.data.code === 200) {
+//                "msg":"成功"
+                this.toast('领取成功')
+              }
             } else {
               this.flag = 0
-              if (res.data.code === 200) {
-//               "msg":"成功"
-                btnBox.innerText = res.data.msg
-                this.toast(res.data.msg)
-              } else if (res.data.code === 501) {
+              btnBox.style.background = '#BBBBBB'
+              if (res.data.code === 501) {
 //              "msg":"活动结束"
                 btnBox.innerText = res.data.msg
                 this.toast(res.data.msg)
@@ -170,6 +173,14 @@
 //              "msg":"取成功，今日领取结束，明天再来吧!"
                 btnBox.innerText = '已领取'
                 this.toast(res.data.msg)
+              } else if (res.data.code === 503) {
+//                  "msg":"领取成功，且领取总次数用完"
+                this.toast(res.data.msg)
+                btnBox.innerText = '已领取'
+              } else if (res.data.code === 502) {
+//                  "msg":"已领完"
+                this.toast(res.data.msg)
+                btnBox.innerText = res.data.msg
               }
             }
           })

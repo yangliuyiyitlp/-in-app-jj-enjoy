@@ -12,7 +12,7 @@
 
 
 <script>
-//  import nativeMethods from '@/utils/nativeMethods.js'
+  //  import nativeMethods from '@/utils/nativeMethods.js'
 
   export default {
     data () {
@@ -55,9 +55,9 @@
     methods: {
       // 获取赳赳福利列表
       getList () {
-//        /wc/list/{cityName}/{isApp}
-        let getListUrl = '/wc/list/' + sessionStorage.getItem('cityName')
-//        getListUrl = '/wc/list/sh/0'
+//        /wc/list/{cityName}
+        let getListUrl = `/wc/list/${sessionStorage.getItem('cityName')}`
+//        getListUrl = '/wc/list/sh'
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {

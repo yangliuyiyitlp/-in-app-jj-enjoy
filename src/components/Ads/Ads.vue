@@ -1,8 +1,6 @@
 <template>
 
   <div class="ads">
-
-    <!--{{childMsg.cityName}}-->
     <!--<mt-swipe id="mySwipe" :auto="0">-->
     <mt-swipe id="mySwipe">
       <mt-swipe-item v-for="(item,index) in list" :key="index">
@@ -32,7 +30,7 @@
       // 获取广告轮播图相关
       getCarousel () {
 //        /ac/carousel/{cityName}/{isApp}/{os}
-        let getListUrl = '/ac/carousel/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
+        let getListUrl = `/ac/carousel/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
 //        getListUrl = '/ac/carousel/sh/1/1'
         this.$ajax.get(getListUrl)
           .then(res => {

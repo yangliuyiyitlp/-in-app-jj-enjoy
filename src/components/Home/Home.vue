@@ -66,10 +66,10 @@
       },
       // 将userId等数据保存在本地中
       saveData () {
-        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
-        sessionStorage.setItem('isApp', '1')
-//        sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
-//        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
+//        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
+//        sessionStorage.setItem('isApp', '1')
+        sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
         if (nativeMethods.getQS('cityName')) {
           sessionStorage.setItem('cityName', nativeMethods.getQS('cityName'))
         } else {

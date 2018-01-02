@@ -5,8 +5,8 @@
     <div class="wrap">
       <ul>
         <li v-for="(item, index) in list" @click="goShare(item)" :key="index">
-          <img v-lazy="item.img_path">
-          <span>活动名称</span>
+          <img v-lazy="item.img_path2">
+          <span>{{item.share_title}}</span>
         </li>
       </ul>
     </div>
@@ -30,10 +30,16 @@
     methods: {
       // 获取活动列表
       getList () {
-        let getListUrl = '/ac/list/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
-        getListUrl = '/ac/list/default/1/2'
-        this.$ajax.get(getListUrl)
+//        /ac/index/{cityName}/{isApp}/{os}
+        let getListUrl = `/ac/index/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
+//        getListUrl = `/ac/index/default/1/2`
+        this.$ajax.get(getListUrl, {
+          params: {
+            offset: 5
+          }
+        })
           .then(res => {
+//            console.log(res)
             if (res.data.code === 200) {
 //              console.log(res.data.data)
               this.list = res.data.data
@@ -58,6 +64,13 @@
 //        console.log(this.arr)
         nativeMethods.toShare(this.arr)
       }
+    },
+    watch: {
+      list: function () {
+        this.$nextTick(() => {
+          document.querySelector('ul').style.width = (this.list.length * 8.25) + 'rem'
+        })
+      }
     }
   }
 </script>
@@ -80,7 +93,7 @@
     color: #4D4E4F;
     height: 1.65rem;
     line-height: 1.65rem;
-    padding: 0.95rem 0.45rem 0.5rem 0.75rem;
+    padding: 0.95rem 0.45rem 0rem 0.75rem;
   }
 
   i {
@@ -94,17 +107,21 @@
   }
 
   .activity .wrap {
+    box-sizing: border-box;
     width: 100%;
     overflow-y: auto;
   }
 
   .activity ul {
-    width: 10000%;
+    width: 1000%;
+    padding: 0.6rem 0 0 0.75rem;
+    height:9.8rem;
   }
 
   .activity ul li {
+    width: 7.5rem;
     float: left;
-    margin-left: 0.75rem;
+    margin-right: 0.75rem;
   }
 
   .activity ul img {
@@ -125,6 +142,9 @@
     font-size: 0.7rem;
     color: rgba(130, 130, 130, 1);
     line-height: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
 </style>

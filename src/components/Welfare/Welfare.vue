@@ -28,7 +28,7 @@
       // 获取福利首页列表
       getWelfare () {
         //  /wc/index/{cityName}/{isApp}
-        let getListUrl = '/wc/index/' + sessionStorage.getItem('cityName')
+        let getListUrl = `/wc/index/${sessionStorage.getItem('cityName')}`
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {

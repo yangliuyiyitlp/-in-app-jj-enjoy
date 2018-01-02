@@ -66,8 +66,8 @@
     methods: {
       // 获取列表
       getList () {
-        let getListUrl = '/ac/list/' + sessionStorage.getItem('cityName') + '/' + sessionStorage.getItem('isApp') + '/' + sessionStorage.getItem('platform')
-        getListUrl = '/ac/list/default/1/2'
+        let getListUrl = `/ac/list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
+//        getListUrl = `/ac/list/default/1/2`
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
