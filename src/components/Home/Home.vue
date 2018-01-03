@@ -66,6 +66,7 @@
       },
       // 将userId等数据保存在本地中
       saveData () {
+//        sessionStorage.setItem('userId', '0')
 //        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
 //        sessionStorage.setItem('isApp', '1')
         sessionStorage.setItem('userId', nativeMethods.getQS('userId'))

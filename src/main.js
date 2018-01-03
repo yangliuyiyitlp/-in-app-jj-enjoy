@@ -22,7 +22,7 @@ Vue.config.productionTip = false
 Axios.defaults.baseURL = baseUrl
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 超时时间
-Axios.defaults.timeout = 3000
+Axios.defaults.timeout = 5000
 Vue.prototype.$ajax = Axios
 console.log(process.env.NODE_ENV)
 

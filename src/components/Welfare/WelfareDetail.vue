@@ -90,6 +90,10 @@
             .catch(err => {
               console.log(err)
             })
+        } else {
+          let btnBox = document.querySelector('#footer .btn')
+          btnBox.innerText = '立即领取'
+          btnBox.style.background = 'linear-gradient(to right, #FD5E33, #F43623)'
         }
       },
       // 获取详情信息
@@ -123,6 +127,7 @@
       getWelfare () {
         // 判断用户是否登录
         if (+sessionStorage.getItem('userId') === 0) {
+//          console.log(1)
           // 未登录去登录
           nativeMethods.toLogin()
         } else {
@@ -216,20 +221,25 @@
       // 格式化倒计时时间
       formatData () {
         let t = this.detailObj.endTime - new Date()
+        let btnBox = document.querySelector('#footer .btn')
+        let spanBox = document.querySelector('.left span')
 //        t = 0
         // 活动结束 按钮显示已结束
         // todo 此处按钮禁止点击事件 样式是否下需要改变?
         if (t <= 0) {
-          document.querySelector('.left span').innerText = '0天0小时0分'
-          document.querySelector('#footer .btn').innerText = '已结束'
-          this.flag = 0
+          spanBox.innerText = '0天0小时0分'
+          if (+sessionStorage.getItem('userId') === 0) {
+            btnBox.innerText = '活动结束'
+            btnBox.style.background = '#BBBBBB'
+            this.flag = 0
+          }
         } else {
           let minutes = Math.floor((t / 1000 / 60) % 60)
           let hours = Math.floor((t / (1000 * 60 * 60)) % 24)
           let days = Math.floor(t / (1000 * 60 * 60 * 24))
           let str = days + '天' + hours + '小时' + minutes + '分'
-          console.log(str)
-          document.querySelector('.left span').innerText = str
+//          console.log(str)
+          spanBox.innerText = str
         }
       }
     },

@@ -31,7 +31,7 @@
       getDetail () {
 //        /ac/detail/{adId}/{isApp}
         let getDetailUrl = `/ac/detail/${this.adId}/${sessionStorage.getItem('isApp')}`
-        getDetailUrl = '/ac/detail/2c94bf815aa65346015aa66428cb0161/1'
+//        getDetailUrl = '/ac/detail/2c94bf815aa65346015aa66428cb0161/1'
         this.$ajax.get(getDetailUrl)
           .then(res => {
             if (res.data.code === 200) {
