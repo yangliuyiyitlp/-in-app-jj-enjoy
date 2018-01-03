@@ -27,7 +27,7 @@
       }
     },
     created () {
-      this.saveData()
+//      this.saveData()
     },
     methods: {
       // 导航离开该组件时把位置存起来

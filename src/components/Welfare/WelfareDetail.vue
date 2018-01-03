@@ -58,7 +58,8 @@
 //        /wc/init/{userId}/{welfareId}
         // todo 登录才调用
         if (+sessionStorage.getItem('userId') !== 0) {
-          let url = `/wc/init/${sessionStorage.getItem('userId')}/${this.$route.params.id}`
+//          let url = `/wc/init/${sessionStorage.getItem('userId')}/${this.$route.params.id}`
+          let url = `http://139.196.194.172:8080/jjlx/wc/init/${sessionStorage.getItem('userId')}/${this.$route.params.id}`
 //          url = '/wc/init/2c9094435f8055a1015f80c5711d0029/09a100377ca8441d8d62cf6333e42cca'
           this.$ajax.get(url)
             .then(res => {
@@ -99,7 +100,8 @@
       // 获取详情信息
       getDetail () {
 //        /wc/detail/{id}
-        let getDetailUrl = `/wc/detail/${this.$route.params.id}`
+        let getDetailUrl = `http://139.196.194.172:8080/jjlx/wc/detail/${this.$route.params.id}`
+//        let getDetailUrl = `/wc/detail/${this.$route.params.id}`
 //        getDetailUrl = '/wc/detail/09a100377ca8441d8d62cf6333e42cca'
         this.$ajax.get(getDetailUrl)
           .then(res => {
@@ -113,10 +115,6 @@
               } else {
                 this.imgPath2 = this.detailObj.imgPath2.split(',')
               }
-//              console.log(this.imgPath2)
-//              console.log(this.detailObj)
-//              this.detailObj.businessInfo = '一二三五七八七八八五六七二三五七八七八七八七八八'
-//              this.detailObj.businessInfo = ''
             }
           })
           .catch(err => {
@@ -142,7 +140,8 @@
       joinWelfare () {
         // todo 根据返回的code做判断
 //        /wc/join/{userId}/{welfareId}
-        this.$ajax.post(`/wc/join`, {
+//        this.$ajax.post(`/wc/join`, {
+        this.$ajax.post(`http://139.196.194.172:8080/jjlx/wc/join`, {
           'userId': sessionStorage.getItem('userId'),
           'welfareId': this.$route.params.id
 //          'welfareId': '09a100377ca8441d8d62cf6333e42cca'
