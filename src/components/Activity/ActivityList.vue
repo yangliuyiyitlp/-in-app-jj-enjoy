@@ -74,7 +74,7 @@
 //        let getListUrl = `/ac/list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
 //         临时修改
 //        list/default/1/2
-        let getListUrl = `list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
+        let getListUrl = `http://139.196.194.172:8281/list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
@@ -97,7 +97,7 @@
       // 去商家福利详情页面
       goWelfareDetail (data) {
         console.log(data.id)
-        this.$router.push({name: 'welfare.detail', params: {id: data.id}})
+        this.$router.push({name: 'welfare.detail', params: {adId: data.id}})
       },
       // 触发分享功能
       goShare (data) {
@@ -112,8 +112,8 @@
       },
       // 将userId等数据保存在本地中
       saveData (callback) {
+        //        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
 //        sessionStorage.setItem('userId', '0')
-//        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
 //        sessionStorage.setItem('isApp', '1')
         sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
         sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
@@ -159,12 +159,13 @@
   }
 
   ul {
+    margin-top:1rem;
     overflow: hidden;
   }
 
   li {
     float: left;
-    margin: 0.75rem 0.75rem 0;
+    margin: 0 0.75rem 0.75rem;
     width: 17.25rem;
     height: 7rem;
   }

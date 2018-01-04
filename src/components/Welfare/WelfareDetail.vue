@@ -58,12 +58,11 @@
 //        /wc/init/{userId}/{welfareId}
         // todo 登录才调用
         if (+sessionStorage.getItem('userId') !== 0) {
-//          let url = `/wc/init/${sessionStorage.getItem('userId')}/${this.$route.params.id}`
-          let url = `http://139.196.194.172:8080/jjlx/wc/init/${sessionStorage.getItem('userId')}/${this.$route.params.id}`
+          let url = `wc/init/${sessionStorage.getItem('userId')}/${this.$route.params.adId}`
 //          url = '/wc/init/2c9094435f8055a1015f80c5711d0029/09a100377ca8441d8d62cf6333e42cca'
           this.$ajax.get(url)
             .then(res => {
-              console.log(res.data)
+//              console.log(res.data)
               let btnBox = document.querySelector('#footer .btn')
               if (res.data.code === 200) {
 //                "msg":"成功" 可以正常领取
@@ -100,17 +99,21 @@
       // 获取详情信息
       getDetail () {
 //        /wc/detail/{id}
-        let getDetailUrl = `http://139.196.194.172:8080/jjlx/wc/detail/${this.$route.params.id}`
-//        let getDetailUrl = `/wc/detail/${this.$route.params.id}`
+        let getDetailUrl = `wc/detail/${this.$route.params.adId}`
 //        getDetailUrl = '/wc/detail/09a100377ca8441d8d62cf6333e42cca'
         this.$ajax.get(getDetailUrl)
           .then(res => {
 //            console.log(res.data)
             if (res.data.code === 200) {
               this.detailObj = res.data.data
-              console.log(this.detailObj)
-              // 获取轮播图列表
-              if (this.detailObj.imgPath2.indexOf(',') === -1) {
+//              console.log(this.detailObj)
+              // 获取轮播图列表 最后一个肯定为逗号 截去最后逗号
+              let str = this.detailObj.imgPath2
+              if (str[str.length - 1] === ',') {
+                str = str.substring(0, str.length - 1)
+              }
+              this.imgPath2 = str.split(',')
+              if (str.indexOf(',') === -1) {
                 this.imgPath2[0] = this.detailObj.imgPath2
               } else {
                 this.imgPath2 = this.detailObj.imgPath2.split(',')
@@ -125,7 +128,6 @@
       getWelfare () {
         // 判断用户是否登录
         if (+sessionStorage.getItem('userId') === 0) {
-//          console.log(1)
           // 未登录去登录
           nativeMethods.toLogin()
         } else {
@@ -140,14 +142,13 @@
       joinWelfare () {
         // todo 根据返回的code做判断
 //        /wc/join/{userId}/{welfareId}
-//        this.$ajax.post(`/wc/join`, {
-        this.$ajax.post(`http://139.196.194.172:8080/jjlx/wc/join`, {
+        this.$ajax.post(`wc/join`, {
           'userId': sessionStorage.getItem('userId'),
-          'welfareId': this.$route.params.id
+          'welfareId': this.$route.params.adId
 //          'welfareId': '09a100377ca8441d8d62cf6333e42cca'
         })
           .then(res => {
-            console.log(res.data)
+//            console.log(res.data)
             let btnBox = document.querySelector('#footer .btn')
             if (res.data.code === 409 || res.data.code === 200) {
               this.flag = 1
