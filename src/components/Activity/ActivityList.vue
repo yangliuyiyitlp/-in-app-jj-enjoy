@@ -9,7 +9,7 @@
     <ul>
       <!--<li v-for="(item, index) in list" @click="goShare(item)">-->
       <li v-for="(item, index) in list" @click="goDetail(item)">
-        <img v-lazy="item.imgPath">
+        <img v-lazy="item.img_path">
       </li>
     </ul>
   </div>
@@ -27,9 +27,7 @@
       }
     },
     created () {
-//      this.getList()
-//      this.saveData()
-      this.saveData(this.getList)
+      this.saveData()
     },
     // 导航离开该组件时把位置存起来
     beforeRouteLeave (to, from, next) {
@@ -71,10 +69,8 @@
       getList () {
 //        getListUrl = `/ac/list/default/1/2`
 //        let getListUrl = `ac/list/${nativeMethods.getQS('cityName')}/${nativeMethods.getQS('isApp')}/${sessionStorage.getItem('platform')}`
-//        let getListUrl = `/ac/list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
 //         临时修改
-//        list/default/1/2
-        let getListUrl = `http://139.196.194.172:8281/list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
+        let getListUrl = `ac/list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
         this.$ajax.get(getListUrl)
           .then(res => {
             if (res.data.code === 200) {
@@ -89,20 +85,22 @@
       goDetail (item) {
 //        console.log(item)
         if (+item.type === 5) {
+          // 获取赳赳优惠券详情页面
           this.goWelfareDetail(item)
         } else {
+          // 以前的写好的完整页面
           this.goShare(item)
         }
       },
       // 去商家福利详情页面
       goWelfareDetail (data) {
-        console.log(data.id)
-        this.$router.push({name: 'welfare.detail', params: {adId: data.id}})
+//        console.log(data.id)
+        this.$router.push({name: 'welfare.detail', query: {adId: data.id}})
       },
       // 触发分享功能
       goShare (data) {
         console.log(data)
-        location.href = data.activityPath
+        location.href = data.activity_path
         if (data.sharePlatform === null) {
           data.sharePlatform = ''
         }
@@ -111,8 +109,8 @@
         nativeMethods.toShare(this.arr)
       },
       // 将userId等数据保存在本地中
-      saveData (callback) {
-        //        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
+      saveData () {
+//        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
 //        sessionStorage.setItem('userId', '0')
 //        sessionStorage.setItem('isApp', '1')
         sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
@@ -129,7 +127,7 @@
         } else {
           sessionStorage.setItem('platform', 2)
         }
-        callback()
+        this.getList()
       }
 //      toHome () {
 //        nativeMethods.toHome()
@@ -159,7 +157,7 @@
   }
 
   ul {
-    margin-top:1rem;
+    margin-top: 1rem;
     overflow: hidden;
   }
 
@@ -167,7 +165,7 @@
     float: left;
     margin: 0 0.75rem 0.75rem;
     width: 17.25rem;
-    height: 7rem;
+    height: 9.2rem;
   }
 
   li img {
