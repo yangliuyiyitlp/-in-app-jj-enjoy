@@ -10,8 +10,11 @@
 
       <div class="welfare">
         <p>{{detailObj.welfareTitle}}</p>
-        <span class="left"><b></b><span ref="formatTime"></span></span>
-        <span class="right">{{detailObj.welfareSecTitle}}</span>
+        <ul>
+          <li class="left"><b></b><span ref="formatTime"></span></li>
+          <li class="right">{{detailObj.welfareSecTitle}}</li>
+        </ul>
+
       </div>
 
     </div>
@@ -348,32 +351,38 @@
 
   }
 
-  .welfare > span {
+  .welfare ul {
     position: absolute;
-    height: 19px;
+    height: 0.95rem;
+    width: 15.75rem;
     bottom: 0.75rem;
     color: rgba(130, 130, 130, 1);
   }
 
-  .welfare span span {
+  .welfare ul li {
+    position: absolute;
+    height: 0.95rem;
+    font-size: 0.7rem;
+    line-height: 0.95rem;
     display: inline-block;
-    font-size: 14px;
-    line-height: 19px;
+  }
+
+  li.right {
+    right: 0;
+  }
+
+  .welfare .left span {
+    margin-left: 0.95rem;
+
   }
 
   .welfare b {
-    display: inline-block;
+    position: absolute;
     width: 0.65rem;
     height: 0.75rem;
     background: url('../../assets/img/time.png') no-repeat;
     background-size: 100% 100%;
-    vertical-align: middle;
-    margin-right: 0.3rem;
-  }
-
-  span.right {
-    right: 0.75rem;
-    font-size: 14px;
+    top: -1px;
   }
 
   .address {
