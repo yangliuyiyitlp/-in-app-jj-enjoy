@@ -58,10 +58,25 @@
     methods: {
       // 初始化信息 按钮
       getInit () {
+        if (!sessionStorage.getItem('userId')) {
+          sessionStorage.setItem('userId', 0)
+        }
+        // 二级弹框进入 获取查询字符串中useId isApp存储本地
+        if (nativeMethods.getQS('isApp')) {
+          sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
+          if (+nativeMethods.getQS('userId') !== 0) {
+            sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+          }
+        }
         // todo 登录才调用
         if (+sessionStorage.getItem('userId') !== 0) {
-          let url = `wc/init/${sessionStorage.getItem('userId')}/${this.$route.query.adId}`
+          let url
 //        /wc/init/{userId}/{welfareId}
+          if (nativeMethods.getQS('isApp')) {
+            url = `wc/init/${sessionStorage.getItem('userId')}/${nativeMethods.getQS('adId')}`
+          } else {
+            url = `wc/init/${sessionStorage.getItem('userId')}/${this.$route.query.adId}`
+          }
           this.$ajax.get(url)
             .then(res => {
 //              console.log(res.data)
@@ -103,8 +118,13 @@
       // 获取详情信息
       getDetail () {
 //        /wc/detail/{id}
-        let getDetailUrl = `ac/detail/${this.$route.query.adId}/${sessionStorage.getItem('isApp')}`
-//        getDetailUrl = '/ac/detail/09a100377ca8441d8d62cf6333e42cca'
+        let getDetailUrl
+        if (nativeMethods.getQS('isApp')) {
+          getDetailUrl = `ac/detail/${nativeMethods.getQS('adId')}/${nativeMethods.getQS('isApp')}`
+        } else {
+          getDetailUrl = `ac/detail/${this.$route.query.adId}/${sessionStorage.getItem('isApp')}`
+        }
+//        getDetailUrl = '/wc/detail/09a100377ca8441d8d62cf6333e42cca'
         this.$ajax.get(getDetailUrl)
           .then(res => {
 //            console.log(res.data)
@@ -133,7 +153,11 @@
       getWelfare () {
         // 判断用户是否登录
         // 只判断list进来未登录
-        if (+sessionStorage.getItem('userId') === 0) {
+        if (+sessionStorage.getItem('userId') === 0 && !nativeMethods.getQS('isApp')) {
+          // 未登录去登录
+          nativeMethods.toLogin()
+          // 从二级弹框进入
+        } else if (nativeMethods.getQS('isApp') && +nativeMethods.getQS('userId') === 0 && +sessionStorage.getItem('userId') === 0) {
           // 未登录去登录
           nativeMethods.toLogin()
         } else {
@@ -143,14 +167,33 @@
 //            console.log(this.detailObj.id)
           }
         }
+//        if ((!nativeMethods.getQS('isApp') && +sessionStorage.getItem('userId') === 0) || (nativeMethods.getQS('isApp') && +nativeMethods.getQS('userId') === 0)) {
+//          // 未登录去登录
+//          nativeMethods.toLogin()
+//        } else {
+//          // 已经登录获取福利
+//          if (this.flag) {
+//            this.joinWelfare()
+// //            console.log(this.detailObj.id)
+//          }
+//        }
       },
       // todo 参与领取优惠券的多种逻辑
       joinWelfare () {
         // todo 根据返回的code做判断
 //        /wc/join/{userId}/{welfareId}
+        let welfareId
+        let userId
+        if (nativeMethods.getQS('isApp')) {
+          welfareId = nativeMethods.getQS('adId')
+          userId = nativeMethods.getQS('userId')
+        } else {
+          welfareId = this.$route.query.adId
+          userId = sessionStorage.getItem('userId')
+        }
         this.$ajax.post(`wc/join`, {
-          'userId': sessionStorage.getItem('userId'),
-          'welfareId': this.$route.query.adId
+          'userId': userId,
+          'welfareId': welfareId
 //          'welfareId': '09a100377ca8441d8d62cf6333e42cca'
         })
           .then(res => {

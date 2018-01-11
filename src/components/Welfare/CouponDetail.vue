@@ -49,20 +49,13 @@
       }
     },
     created () {
+      this.saveData()
       this.getDetail()
       this.getInit()
     },
     methods: {
       // 初始化信息 按钮
       getInit () {
-        if (!sessionStorage.getItem('userId')) {
-          sessionStorage.setItem('userId', '0')
-        }
-        // 二级弹框deng进入 获取查询字符串中useId isApp存储本地
-        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
-        if (nativeMethods.getQS('userId') && +nativeMethods.getQS('userId') !== 0) {
-          sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
-        }
         // todo 登录才调用
         if (+sessionStorage.getItem('userId') !== 0) {
           //        /wc/init/{userId}/{welfareId}
@@ -72,10 +65,10 @@
 //              console.log(res.data)
               let btnBox = document.querySelector('#footer .btn')
               if (res.data.code === 200) {
+                this.flag = 1
 //                "msg":"成功" 可以正常领取
                 btnBox.innerText = '立即领取'
                 btnBox.style.background = 'linear-gradient(to right, #FD5E33, #F43623)'
-                this.flag = 1
               } else {
                 this.flag = 0
                 btnBox.style.background = '#BBBBBB'
@@ -109,7 +102,7 @@
       getDetail () {
 //        /wc/detail/{id}
         let getDetailUrl = `ac/detail/${nativeMethods.getQS('adId')}/${nativeMethods.getQS('isApp')}`
-//        getDetailUrl = '/wc/detail/09a100377ca8441d8d62cf6333e42cca'
+//        getDetailUrl = '/ac/detail/09a100377ca8441d8d62cf6333e42cca'
         this.$ajax.get(getDetailUrl)
           .then(res => {
 //            console.log(res.data)
@@ -138,7 +131,7 @@
       getWelfare () {
         // 判断用户是否登录
         // 从二级弹框进入
-        if (+nativeMethods.getItem('userId') === 0) {
+        if (+sessionStorage.getItem('userId') === 0) {
           // 未登录去登录
           nativeMethods.toLogin()
         } else {
@@ -205,6 +198,23 @@
           .catch(err => {
             console.error(err)
           })
+      },
+      // 二级弹框deng进入 获取查询字符串中useId isApp存储本地
+      saveData () {
+        if (!sessionStorage.getItem('userId')) {
+          sessionStorage.setItem('userId', '0')
+        }
+        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
+        if (nativeMethods.getQS('userId') && +nativeMethods.getQS('userId') !== 0) {
+          sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+        }
+        //        判断终端 1:android 2:ios',对应显示不同列表
+        let u = navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
+          sessionStorage.setItem('platform', 1)
+        } else {
+          sessionStorage.setItem('platform', 2)
+        }
       },
       // 弹框
       toast (msg) {
