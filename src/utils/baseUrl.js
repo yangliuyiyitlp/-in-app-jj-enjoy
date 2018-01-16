@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
   // welfareUrl = 'http://139.196.194.172:8080/jjlx/' // 测试地址
 } else {
   // baseUrl = 'http://192.168.0.164:8281' // dev地址
-  baseUrl = 'http://139.196.194.172:8080/jjlx/'  // 测试地址
+  // baseUrl = 'http://139.196.194.172:8080/jjlx/'  // 测试地址
 }
 
 module.exports = baseUrl
