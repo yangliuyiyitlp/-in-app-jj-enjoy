@@ -61,8 +61,8 @@
     methods: {
       // 获取应用详情
       getDetail () {
-        let getDetailUrl = `http://106.15.47.133:8080/jjlx/download/detail/${nativeMethods.getQS('adId')}`
-        getDetailUrl = 'http://106.15.47.133:8080/jjlx/download/detail/1' // dev
+        let getDetailUrl = `http://106.15.47.133:8080/jjlx/download/detail/${nativeMethods.getQS('downloadId')}/${sessionStorage.getItem('platform')}`
+        // getDetailUrl = 'http://106.15.47.133:8080/jjlx/download/detail/1/1' // dev
         this.$ajax.get(getDetailUrl)
           .then(res => {
             console.log(res)
