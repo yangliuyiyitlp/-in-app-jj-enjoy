@@ -17,6 +17,7 @@ export default new Router({
     // {path: '/enjoylist', name: 'home', component: Home, meta: {title: '赳赳乐享'}},
     {path: '/home', name: 'home', component: Home, meta: {title: '赳赳乐享'}},
     {path: '/enjoylist', name: 'activity.list', component: ActivityList, meta: {title: '最新活动'}}, // 还原
+    // {path: '/enjoylist', name: 'home', component: Home, meta: {title: '最新活动'}}, // 还原
     // {path: '/activity/detail', name: 'activity.detail', component: ActivityDetail, meta: {title: '活动详情'}}
     {path: '/welfare/list', name: 'welfare.list', component: WelfareList, meta: {title: '赳赳福利'}},
     {path: '/welfare/detail', name: 'welfare.detail', component: WelfareDetail, meta: {title: '活动详情'}},

@@ -267,6 +267,7 @@
   #detail {
     margin: 0.5rem 0.75rem;
     position: relative;
+    width: 17.25rem;
   }
 
   .top {

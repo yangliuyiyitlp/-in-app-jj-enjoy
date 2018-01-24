@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="download">
     <div class="banner">
       <img :src="detailObj.topImg" alt="">
     </div>
@@ -61,11 +61,11 @@
     methods: {
       // 获取应用详情
       getDetail () {
-        let getDetailUrl = `http://106.15.47.133:8080/jjlx/download/detail/${nativeMethods.getQS('downloadId')}/${sessionStorage.getItem('platform')}`
-        // getDetailUrl = 'http://106.15.47.133:8080/jjlx/download/detail/1/1' // dev
+        let getDetailUrl = `download/detail/${nativeMethods.getQS('downloadId')}/${sessionStorage.getItem('platform')}`
+        // getDetailUrl = 'download/detail/1/1' // dev
         this.$ajax.get(getDetailUrl)
           .then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.data.code === 200) {
               this.detailObj = res.data.data
               // this.detailObj.tag = '钢铁侠,蜘蛛侠,蝙蝠侠,钢铁侠,蜘蛛侠'
@@ -83,8 +83,8 @@
         if (+sessionStorage.getItem('userId') === 0) {
           nativeMethods.toLogin()
         } else {
-          // todo 跳转下载 放入地址
-          location.href = this.detailObj.downUrl
+          // 跳转下载 放入地址
+          window.location.href = this.detailObj.downUrl
         }
       },
       // 从原生直接进入 获取查询字符串中useId isApp存储本地
@@ -116,8 +116,12 @@
 </script>
 
 <style scoped>
+  .download {
+    width: 100%;
+  }
+
   img {
-    border: solid 1px transparent;
+    border: solid 0px transparent;
   }
 
   .banner {

@@ -282,6 +282,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   #detail {
+    width: 17.25rem;
     margin: 0.5rem 0.75rem;
     position: relative;
   }
