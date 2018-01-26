@@ -34,7 +34,6 @@
             if (res.data.code === 200) {
 //              console.log(res.data.data)
               this.welfareList = res.data.data
-//              console.log(this.welfareList)
             }
           })
           .catch(err => {
@@ -43,7 +42,7 @@
       },
       // 去商家福利详情页面
       goWelfareDetail (data) {
-        this.$router.push({name: 'welfare.detail', params: {id: data.id}})
+        this.$router.push({name: 'welfare.detail', query: {adId: data.id}})
       },
       // 跳转至福利列表页面
       goWelfareList () {

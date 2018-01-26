@@ -27,7 +27,9 @@
       }
     },
     created () {
-      this.saveData()
+      // 首页为home时不用
+      // this.saveData()
+      this.getList()
     },
     // 导航离开该组件时把位置存起来
     beforeRouteLeave (to, from, next) {
@@ -68,8 +70,6 @@
       // 获取列表
       getList () {
 //        getListUrl = `/ac/list/default/1/2`
-//        let getListUrl = `ac/list/${nativeMethods.getQS('cityName')}/${nativeMethods.getQS('isApp')}/${sessionStorage.getItem('platform')}`
-//         临时修改
         let getListUrl = `ac/list/${sessionStorage.getItem('cityName')}/${sessionStorage.getItem('isApp')}/${sessionStorage.getItem('platform')}`
         this.$ajax.get(getListUrl)
           .then(res => {
@@ -107,28 +107,28 @@
         this.arr = [data.share_platform, data.share_url, data.share_title, data.share_content, data.share_pic]
         //        console.log(this.arr)
         nativeMethods.toShare(this.arr)
-      },
-      // 将userId等数据保存在本地中
-      saveData () {
-        // sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
-        // sessionStorage.setItem('userId', '0')
-        // sessionStorage.setItem('isApp', '1')
-        sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
-        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
-        if (nativeMethods.getQS('cityName')) {
-          sessionStorage.setItem('cityName', nativeMethods.getQS('cityName'))
-        } else {
-          sessionStorage.setItem('cityName', 'default')
-        }
-        //        判断终端 1:android 2:ios',对应显示不同列表
-        let u = navigator.userAgent
-        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-          sessionStorage.setItem('platform', 1)
-        } else {
-          sessionStorage.setItem('platform', 2)
-        }
-        this.getList()
       }
+      // 将userId等数据保存在本地中
+      // saveData () {
+      //   // sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
+      //   // sessionStorage.setItem('userId', '0')
+      //   // sessionStorage.setItem('isApp', '1')
+      //   sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+      //   sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
+      //   if (nativeMethods.getQS('cityName')) {
+      //     sessionStorage.setItem('cityName', nativeMethods.getQS('cityName'))
+      //   } else {
+      //     sessionStorage.setItem('cityName', 'default')
+      //   }
+      //   //        判断终端 1:android 2:ios',对应显示不同列表
+      //   let u = navigator.userAgent
+      //   if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
+      //     sessionStorage.setItem('platform', 1)
+      //   } else {
+      //     sessionStorage.setItem('platform', 2)
+      //   }
+      //   this.getList()
+      // }
 //      toHome () {
 //        nativeMethods.toHome()
 //      },

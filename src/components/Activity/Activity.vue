@@ -39,7 +39,6 @@
           }
         })
           .then(res => {
-//            console.log(res)
             if (res.data.code === 200) {
 //              console.log(res.data.data)
               this.list = res.data.data

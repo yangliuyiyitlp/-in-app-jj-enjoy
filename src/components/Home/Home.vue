@@ -27,7 +27,7 @@
       }
     },
     created () {
-//      this.saveData()
+      this.saveData()
     },
     methods: {
       // 导航离开该组件时把位置存起来
@@ -58,18 +58,18 @@
             window.scroll(0, scrollTop)
           })
         }
-//      this.$nextTick(function () {
-//        let position = this.$store.state.position // 返回页面取出来
-//        window.scroll(0, position)
-//        console.log(position)
-//      })
       },
       // 将userId等数据保存在本地中
       saveData () {
-//        sessionStorage.setItem('userId', '0')
-//        sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
-//        sessionStorage.setItem('isApp', '1')
-        sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+        // sessionStorage.setItem('userId', '0')
+        // sessionStorage.setItem('userId', '2c9094435f8055a1015f80c5711d0029')
+        // sessionStorage.setItem('isApp', '1')
+        // 本地存在但原生传过来的是0 就不存储
+        if (!sessionStorage.getItem('userId') && +nativeMethods.getQS('userId') !== 0) {
+          sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+        } else if (!sessionStorage.getItem('userId') && +nativeMethods.getQS('userId') === 0) {
+          sessionStorage.setItem('userId', 0)
+        }
         sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
         if (nativeMethods.getQS('cityName')) {
           sessionStorage.setItem('cityName', nativeMethods.getQS('cityName'))

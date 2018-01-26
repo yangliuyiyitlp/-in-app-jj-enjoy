@@ -72,7 +72,7 @@
       // 去商家福利详情页面
       goWelfareDetail (id) {
 //        console.log(id)
-        this.$router.push({name: 'welfare.detail', params: {id: id}})
+        this.$router.push({name: 'welfare.detail', query: {adId: id}})
       }
     }
   }

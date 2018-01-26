@@ -46,7 +46,7 @@
   import nativeMethods from '@/utils/nativeMethods.js'
 
   export default {
-    name: 'download',
+    name: 'HDownload',
     data () {
       return {
         detailObj: {},
@@ -55,18 +55,13 @@
       }
     },
     created () {
-      // 当是从原生的跳转进来才执行
-      if (location.href.indexOf('userId')) {
-        alert('原生跳转进来的')
-        this.saveData()
-      }
+      // this.saveData()
       this.getDetail()
     },
     methods: {
       // 获取应用详情
       getDetail () {
         let getDetailUrl = `download/detail/${nativeMethods.getQS('downloadId')}/${sessionStorage.getItem('platform')}`
-        alert(getDetailUrl)
         // getDetailUrl = 'download/detail/1/1' // dev
         this.$ajax.get(getDetailUrl)
           .then(res => {
@@ -90,24 +85,24 @@
           // 跳转下载 放入地址
           window.location.href = this.detailObj.downUrl
         }
-      },
-      // 从原生直接进入 获取查询字符串中useId isApp存储本地
-      saveData () {
-        if (!sessionStorage.getItem('userId')) {
-          sessionStorage.setItem('userId', '0')
-        }
-        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
-        if (nativeMethods.getQS('userId') && +nativeMethods.getQS('userId') !== 0) {
-          sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
-        }
-        //        判断终端 1:android 2:ios',对应显示不同列表
-        let u = navigator.userAgent
-        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-          sessionStorage.setItem('platform', 1)
-        } else {
-          sessionStorage.setItem('platform', 2)
-        }
       }
+      // 赳赳乐享中不需要再自己保存数据了
+      // saveData () {
+      //   if (!sessionStorage.getItem('userId')) {
+      //     sessionStorage.setItem('userId', '0')
+      //   }
+      //   sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
+      //   if (nativeMethods.getQS('userId') && +nativeMethods.getQS('userId') !== 0) {
+      //     sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+      //   }
+      //   //        判断终端 1:android 2:ios',对应显示不同列表
+      //   let u = navigator.userAgent
+      //   if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
+      //     sessionStorage.setItem('platform', 1)
+      //   } else {
+      //     sessionStorage.setItem('platform', 2)
+      //   }
+      // }
     },
     watch: {
       list: function () {
@@ -125,7 +120,7 @@
   }
 
   img {
-    border: solid 0 transparent;
+    border: solid 0px transparent;
   }
 
   .banner {

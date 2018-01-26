@@ -104,7 +104,7 @@
       getDetail () {
 //        /wc/detail/{id}
         let getDetailUrl = `ac/detail/${this.$route.query.adId}/${sessionStorage.getItem('isApp')}`
-//        getDetailUrl = '/ac/detail/09a100377ca8441d8d62cf6333e42cca'
+        // getDetailUrl = '/ac/detail/09a100377ca8441d8d62cf6333e42cca'
         this.$ajax.get(getDetailUrl)
           .then(res => {
 //            console.log(res.data)
