@@ -42,6 +42,11 @@
             if (res.data.code === 200) {
 //              console.log(res.data.data)
               this.list = res.data.data
+              for (let i = 0; i < this.list.length; i++) {
+                if (this.list[i].img_path2.indexOf(',') !== -1) {
+                  this.list[i].img_path2 = this.list[i].img_path2.substring(0, this.list[i].img_path2.length - 1)
+                }
+              }
             }
           })
           .catch(err => {
@@ -114,7 +119,7 @@
   .activity ul {
     width: 1000%;
     padding: 0.6rem 0 0 0.75rem;
-    height:9.8rem;
+    height: 9.8rem;
   }
 
   .activity ul li {
