@@ -24,7 +24,7 @@ export default new Router({
     // {path: '/download', name: 'download', component: Download, meta: {title: '下载应用'}}
     // 以下为首页为home
     {path: '/', redirect: {name: 'home'}},
-    {path: '/enjoylist', name: 'home', component: Home, meta: {title: '赳赳乐享'}},
+    {path: '/enjoylist', name: 'home', component: Home, meta: {title: '赳赳乐享'}}, // 首页
     {path: '/activity/list', name: 'activity.list', component: ActivityList, meta: {title: '最新活动'}}, // 还原
     {path: '/welfare/list', name: 'welfare.list', component: WelfareList, meta: {title: '赳赳福利'}},
     {path: '/welfare/detail', name: 'welfare.detail', component: WelfareDetail, meta: {title: '活动详情'}},
