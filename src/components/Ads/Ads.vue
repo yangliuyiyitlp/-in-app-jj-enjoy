@@ -9,6 +9,16 @@
         </div>
       </mt-swipe-item>
     </mt-swipe>
+    <div id="target">
+      <span class="one" @click="goWelfareList">
+        <img src="../../assets/img/path1.png" alt="">
+        <p>享优惠</p>
+      </span>
+      <span class="two" @click="goActivityList">
+        <img src="../../assets/img/path2.png" alt="">
+         <p>赳福利</p>
+      </span>
+    </div>
   </div>
 
 </template>
@@ -43,6 +53,14 @@
             console.error(err)
           })
       },
+      // 跳转至赳福利(最新活动)列表页面
+      goActivityList () {
+        this.$router.push({name: 'activity.list'})
+      },
+      // 跳转至享优惠(福利)列表页面
+      goWelfareList () {
+        this.$router.push({name: 'welfare.list'})
+      },
       // 触发分享功能
       goShare (data) {
 //        console.log(data)
@@ -62,13 +80,13 @@
 <style scoped>
 
   .ads {
-    padding: 0.75rem 0.75rem 1.05rem;
     background-color: #fff;
   }
 
   #mySwipe {
-    width: 17.25rem;
-    height: 7rem;
+    margin: 0.75rem 1rem;
+    width: 16.75rem;
+    height: 7.5rem;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
@@ -80,16 +98,36 @@
 
   #mySwipe img, #mySwipe div {
     width: 100%;
-    height: 7rem;
+    height: 7.5rem;
     -webkit-border-radius: 0.6rem;
     -moz-border-radius: 0.6rem;
     border-radius: 0.6rem;
   }
 
-  /*#mySwipe .mint-swipe-item {*/
-    /*-webkit-border-radius: 0.6rem;*/
-    /*-moz-border-radius: 0.6rem;*/
-    /*border-radius: 0.6rem;*/
-  /*}*/
+  #target {
+    padding: 0 2.9rem 0.55rem;
+    font-size: 0;
+  }
 
+  #target span {
+    display: inline-block;
+    width: 4.7rem;
+    height: 4.7rem;
+  }
+
+  #target img {
+    width: 100%;
+  }
+
+  #target p {
+    font-size: 0.7rem;
+    color: #4D4E4F;
+    text-align: center;
+    height: 0.95rem;
+    margin: -0.2rem 0 0.55rem;
+  }
+
+  #target .two {
+    float: right;
+  }
 </style>

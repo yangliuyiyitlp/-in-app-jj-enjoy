@@ -1,7 +1,7 @@
 <template>
   <div id="welfareList">
     <ul>
-      <li v-for="item in list" :key="item.id" @click="goWelfareDetail(item.id)">
+      <li v-for="item in list" :key="item.id" @click="goWelfareDetail(item)">
         <img v-lazy="item.img_path">
         <span class="shopTitle">{{item.welfare_title}}</span>
         <span class="shopLimit">{{item.welfare_sec_title}}</span>
@@ -70,9 +70,10 @@
           })
       },
       // 去商家福利详情页面
-      goWelfareDetail (id) {
+      goWelfareDetail (data) {
+        location.href = data.activity_path
 //        console.log(id)
-        this.$router.push({name: 'welfare.detail', query: {adId: id}})
+//         this.$router.push({name: 'welfare.detail', query: {adId: id}})
       }
     }
   }
@@ -92,7 +93,7 @@
   li {
     float: left;
     width: 8.25rem;
-    height: 11rem;
+    height: 8.5rem;
     margin-bottom: 0.75rem;
     margin-left: 0.75rem;
     -webkit-border-radius: 0.6rem;
@@ -106,7 +107,7 @@
 
   li img {
     width: 8.25rem;
-    height: 8.25rem;
+    height: 5.75rem;
   }
 
   span {
@@ -119,6 +120,9 @@
     margin-top: 0.35rem;
     font-size: 0.7rem;
     color: #4D4E4F;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .shopLimit {

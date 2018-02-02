@@ -19,7 +19,7 @@
 
     </div>
 
-    <div class="address" v-show="detailObj.businessInfo">
+    <div class="address" v-show="detailObj.isGoods">
       <div class="title">
         <span class="one"></span>
         <span class="two">地址:</span>
@@ -60,7 +60,8 @@
       getInit () {
         // todo 登录才调用
         if (+sessionStorage.getItem('userId') !== 0) {
-          let url = `wc/init/${sessionStorage.getItem('userId')}/${this.$route.query.adId}`
+          // let url = `wc/init/${sessionStorage.getItem('userId')}/${this.$route.query.adId}`
+          let url = `wc/init/${sessionStorage.getItem('userId')}/${nativeMethods.getQS('adId')}`
 //        /wc/init/{userId}/{welfareId}
           this.$ajax.get(url)
             .then(res => {
@@ -86,6 +87,9 @@
                 } else if (res.data.code === 504) {
 //                  "msg":"当天次数用完"
                   btnBox.innerText = res.data.msg
+                } else if (res.data.code === 111) {
+//                  "msg":"即将开始"
+                  btnBox.innerText = res.data.msg
                 }
               }
             })
@@ -103,8 +107,10 @@
       // 获取详情信息
       getDetail () {
 //        /wc/detail/{id}
-        let getDetailUrl = `ac/detail/${this.$route.query.adId}/${sessionStorage.getItem('isApp')}`
-        // getDetailUrl = '/ac/detail/09a100377ca8441d8d62cf6333e42cca'
+//         let getDetailUrl = `ac/detail/${this.$route.query.adId}/${sessionStorage.getItem('isApp')}`
+        let getDetailUrl = `ac/detail/${nativeMethods.getQS('adId')}/${sessionStorage.getItem('isApp')}`
+        // getDetailUrl = '/ac/detail/1b6064c2dfbf460c822d03a045de8200/1'
+        // alert(getDetailUrl)
         this.$ajax.get(getDetailUrl)
           .then(res => {
 //            console.log(res.data)
@@ -124,6 +130,9 @@
                 this.imgPath2 = str.split(',')
               }
             }
+          })
+          .then(() => {
+            this.formatData()
           })
           .catch(err => {
             console.log(err)
@@ -150,7 +159,7 @@
 //        /wc/join/{userId}/{welfareId}
         this.$ajax.post(`wc/join`, {
           'userId': sessionStorage.getItem('userId'),
-          'welfareId': this.$route.query.adId
+          'welfareId': nativeMethods.getQS('adId')
 //          'welfareId': '09a100377ca8441d8d62cf6333e42cca'
         })
           .then(res => {
@@ -212,7 +221,8 @@
 //          }
         let textBox = document.querySelector('.text')
         let addressBox = document.querySelector('.address')
-        if (!this.detailObj.businessInfo) {
+        // isGoods为0时候 为虚拟没有地址
+        if (+this.detailObj.isGoods === 0) {
           textBox.style.marginTop = '1.1rem'
         }
         if (this.$refs.three.clientHeight && this.$refs.three.clientHeight / 20 < 1) {
@@ -226,12 +236,11 @@
       },
       // 格式化倒计时时间
       formatData () {
-        let t = this.detailObj.endTime - new Date()
+        let t = parseInt(+this.detailObj.endTime - (+new Date()))
         let btnBox = document.querySelector('#footer .btn')
         let spanBox = document.querySelector('.left span')
 //        t = 0
         // 活动结束 按钮显示已结束
-        // todo 此处按钮禁止点击事件 样式是否下需要改变?
         if (t <= 0) {
           spanBox.innerText = ''
           if (+sessionStorage.getItem('userId') === 0) {
@@ -239,13 +248,14 @@
             btnBox.style.background = '#BBBBBB'
             this.flag = 0
           }
-        } else {
+        } else if (t > 0) {
           let minutes = Math.floor((t / 1000 / 60) % 60)
           let hours = Math.floor((t / (1000 * 60 * 60)) % 24)
           let days = Math.floor(t / (1000 * 60 * 60 * 24))
           let str = days + '天' + hours + '小时' + minutes + '分'
-//          console.log(str)
           spanBox.innerText = str
+        } else {
+          this.formatData()
         }
       }
     },

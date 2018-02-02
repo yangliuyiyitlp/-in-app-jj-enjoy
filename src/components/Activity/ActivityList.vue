@@ -163,9 +163,9 @@
 
   li {
     float: left;
-    margin: 0 0.75rem 0.75rem;
-    width: 17.25rem;
-    height: 9.2rem;
+    margin: 0 1rem 1rem;
+    width: 16.75rem;
+    height: 7.4rem;
   }
 
   li img {

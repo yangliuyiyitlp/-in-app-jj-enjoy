@@ -1,4 +1,5 @@
 window.saveUserId = (userId) => {
   sessionStorage.setItem('userId', userId)
-  // window.location.reload()
+  // 刷新当前页面
+  window.location.reload()
 }

@@ -56,8 +56,7 @@
     },
     created () {
       // 当是从原生的跳转进来才执行
-      if (location.href.indexOf('userId')) {
-        alert('原生跳转进来的')
+      if (location.href.indexOf('userId') !== -1) {
         this.saveData()
       }
       this.getDetail()
@@ -65,15 +64,25 @@
     methods: {
       // 获取应用详情
       getDetail () {
-        let getDetailUrl = `download/detail/${nativeMethods.getQS('downloadId')}/${sessionStorage.getItem('platform')}`
-        alert(getDetailUrl)
+        let downloadId = nativeMethods.getQS('downloadId')
+        if (downloadId.indexOf('?') !== -1) {
+          downloadId = downloadId.split('?')[0]
+        }
+        let getDetailUrl = `download/detail/${downloadId}/${sessionStorage.getItem('platform')}`
+        // alert(getDetailUrl)
         // getDetailUrl = 'download/detail/1/1' // dev
         this.$ajax.get(getDetailUrl)
           .then(res => {
             // console.log(res)
             if (res.data.code === 200) {
               this.detailObj = res.data.data
-              this.tagList = this.detailObj.tag.split(',')
+              let tagListOld = this.detailObj.tag.split(',')
+              for (let i = 0; i < tagListOld.length; i++) {
+                if (tagListOld[i]) {
+                  this.tagList.push(tagListOld[i])
+                }
+              }
+              // console.log(this.tagList)
               this.list = this.detailObj.revImg.split(';')
             }
           })
@@ -83,6 +92,7 @@
       },
       // 点击下载应用
       download () {
+        // alert(this.detailObj.downUrl)
         // 判断用户是否登录,未登录登录
         if (+sessionStorage.getItem('userId') === 0) {
           nativeMethods.toLogin()
@@ -103,9 +113,9 @@
         //        判断终端 1:android 2:ios',对应显示不同列表
         let u = navigator.userAgent
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
-          sessionStorage.setItem('platform', 1)
+          sessionStorage.setItem('platform', '1')
         } else {
-          sessionStorage.setItem('platform', 2)
+          sessionStorage.setItem('platform', '2')
         }
       }
     },
@@ -182,7 +192,7 @@
     font-size: 0.5rem;
     line-height: 0.5rem;
     color: #fff;
-    padding: 0.15rem 0.4rem;
+    padding: 3px 0.4rem 2px;
     margin: 0.2rem 0.3rem 0 0;
     -webkit-border-radius: 0.38rem;
     -moz-border-radius: 0.38rem;
