@@ -52,6 +52,10 @@
       }
     },
     created () {
+      // 当是从原生的跳转进来才执行
+      if (location.href.indexOf('userId') !== -1) {
+        this.saveData()
+      }
       this.getDetail()
       this.getInit()
     },
@@ -110,7 +114,6 @@
 //         let getDetailUrl = `ac/detail/${this.$route.query.adId}/${sessionStorage.getItem('isApp')}`
         let getDetailUrl = `ac/detail/${nativeMethods.getQS('adId')}/${sessionStorage.getItem('isApp')}`
         // getDetailUrl = '/ac/detail/1b6064c2dfbf460c822d03a045de8200/1'
-        // alert(getDetailUrl)
         this.$ajax.get(getDetailUrl)
           .then(res => {
 //            console.log(res.data)
@@ -256,6 +259,23 @@
           spanBox.innerText = str
         } else {
           this.formatData()
+        }
+      },
+      // 从原生直接进入 获取查询字符串中useId isApp存储本地
+      saveData () {
+        if (!sessionStorage.getItem('userId')) {
+          sessionStorage.setItem('userId', '0')
+        }
+        sessionStorage.setItem('isApp', nativeMethods.getQS('isApp'))
+        if (nativeMethods.getQS('userId') && +nativeMethods.getQS('userId') !== 0) {
+          sessionStorage.setItem('userId', nativeMethods.getQS('userId'))
+        }
+        //        判断终端 1:android 2:ios',对应显示不同列表
+        let u = navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { // 安卓手机
+          sessionStorage.setItem('platform', '1')
+        } else {
+          sessionStorage.setItem('platform', '2')
         }
       }
     },

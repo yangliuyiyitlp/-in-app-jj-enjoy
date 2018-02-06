@@ -246,6 +246,7 @@
 
   .preview ul {
     height: 13.35rem;
+    white-space:nowrap;
   }
 
   .preview li {
@@ -287,7 +288,7 @@
   #footer {
     position: fixed;
     bottom: 0;
-    width: 18.75rem;
+    width: 100%;
     height: 4rem;
     background-color: #fff;
     -webkit-box-shadow: 0 -0.1rem 0.2rem 0 rgba(0, 0, 0, 0.12);
